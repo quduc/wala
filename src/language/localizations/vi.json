@@ -1,0 +1,26 @@
+{
+  "translation": {
+    "home.title": "Home",
+    "loading": "Loading...",
+    "songs": "Songs",
+    "users": "Users",
+    "host": "Host",
+    "room": "Room",
+    "name": "Hello Tung Buiii!!!!",
+    "findSomethingYouNeed": "Find something you need...",
+    "winnerChart": "Winner Chart",
+    "winnerOfWeek": "Winner of the Week",
+    "popularUser": "Popular Users",
+    "mostFavouriteSongs": "Most Favourite Songs",
+    "topSongOfMonth": "Top Songs of the Month",
+    "topSongOfWeek": "Top Songs of the Week",
+    "trendingSongs": "Trending Songs",
+    "topFavHosts": "Top Favourite Hosts",
+    "mostActiveHosts": "Most Active Hosts",
+    "addToFavSong": "Add to favourite song",
+    "addToPlaylist": "Add to Playlist",
+    "searchRightHere": "Search right here...",
+    "following": "Following",
+    "viewAll": "View All"
+  }
+}
