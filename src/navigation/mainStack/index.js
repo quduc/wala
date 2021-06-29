@@ -1,15 +1,13 @@
-import 'react-native-gesture-handler';
-import React from 'react';
-import { Platform } from 'react-native';
-import { createStackNavigator } from '@react-navigation/stack';
-import CreateScreenModal from '@screens/room';
-import * as screenTypes from '../screenTypes';
+import "react-native-gesture-handler";
+import React from "react";
+import { Platform } from "react-native";
+import { createStackNavigator } from "@react-navigation/stack";
+import CreateScreenModal from "@screens/room";
+import * as screenTypes from "../screenTypes";
 
-import MainTab from './mainTab';
-import HomeDetailStack from './HomeDetailStack';
-import RoomDetailStack from './RoomDetailStack';
-import PlaylistDetailStack from './PlaylistDetailStack';
-import ProfileDetailStack from './ProfileDetailStack';
+import MainTab from "./mainTab";
+import HomeDetailStack from "./HomeDetailStack";
+import ProfileDetailStack from "./ProfileDetailStack";
 
 const Stack = createStackNavigator();
 
@@ -18,7 +16,8 @@ function MainStack() {
     <Stack.Navigator
       initialRouteName={screenTypes.MainTab}
       screenOptions={{ headerShown: false, animationEnabled: false }}
-      mode='modal'>
+      mode="modal"
+    >
       <Stack.Screen
         name={screenTypes.MainTab}
         component={MainTab}
@@ -29,20 +28,6 @@ function MainStack() {
       <Stack.Screen
         name={screenTypes.HomeDetailStack}
         component={HomeDetailStack}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name={screenTypes.PlaylistDetailStack}
-        component={PlaylistDetailStack}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name={screenTypes.RoomDetailStack}
-        component={RoomDetailStack}
         options={{
           headerShown: false,
         }}
@@ -59,9 +44,9 @@ function MainStack() {
         name={screenTypes.CreateRoomScreen}
         component={CreateScreenModal}
         options={{
-          animationEnabled: Platform.OS !== 'android',
+          animationEnabled: Platform.OS !== "android",
           cardStyle: {
-            backgroundColor: 'transparent',
+            backgroundColor: "transparent",
           },
         }}
       />

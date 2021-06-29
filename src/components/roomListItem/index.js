@@ -26,12 +26,6 @@ const RoomListItem = ({ item, onCancel }) => {
 
   const goToRoomDetail = () => {
     onCancel && onCancel();
-    navigation.navigate(screenTypes.RoomDetailStack, {
-      screen: screenTypes.RoomDetail,
-      params: {
-        roomDetail: item,
-      },
-    });
   };
 
   const onPress = () => {

@@ -22,14 +22,11 @@ export const ChatStack = "ChatStack";
 export const ChatScreen = "ChatScreen";
 export const ChatDetail = "ChatDetail";
 
-export const PlaylistDetailStack = "PlaylistDetailStack";
 export const AddSongsToPlaylistScreen = "AddSongsToPlaylistScreen";
 
 export const CreateRoomStack = "CreateRoomStack";
 export const CreateRoomScreen = "CreateRoomScreen";
 
-export const RoomDetailStack = "RoomDetailStack";
-export const AddListenersScreen = "AddListenersScreen";
 export const UpdateRoomScreen = "UpdateRoomScreen";
 export const RoomDetail = "RoomDetail";
 export const ListSongInRoom = "ListSongInRoom";

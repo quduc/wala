@@ -88,14 +88,6 @@ const NotificationItem = ({ item }) => {
       roomId,
       content: MESSAGES_TYPE.joined_room,
     });
-    navigation.navigate(screenTypes.RoomDetailStack, {
-      screen: screenTypes.RoomDetail,
-      params: {
-        roomDetail: {
-          id: roomId,
-        },
-      },
-    });
   };
 
   const _renderAvatar = () => (

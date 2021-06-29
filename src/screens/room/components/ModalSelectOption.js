@@ -26,14 +26,7 @@ const ModalSelectOption = ({ items, value, setValue, ignoreAddListeners }) => {
     onClose();
   };
 
-  const goToAddListenersScreen = () => {
-    navigation.navigate(screenTypes.RoomDetailStack, {
-      screen: screenTypes.AddListenersScreen,
-      params: {
-        fromScreen: screenTypes.CreateRoomScreen,
-      },
-    });
-  };
+  const goToAddListenersScreen = () => {};
 
   return (
     <Block bg={colors.blackPrimary} mt={10}>
