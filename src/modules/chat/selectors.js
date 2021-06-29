@@ -11,3 +11,18 @@ export const messengerSelector = createSelector(
   chatSelector,
   (chatReducer) => chatReducer.messenger
 );
+
+export const sendMessageLoadingSelector = createSelector(
+  chatSelector,
+  (chatReducer) => chatReducer.sendMessageLoading
+);
+
+export const messageListSelector = createSelector(
+  chatSelector,
+  (chatReducer) => chatReducer.messageList
+);
+
+export const fetchMessageListLoadingSelector = createSelector(
+  chatSelector,
+  (chatReducer) => chatReducer.fetchMessageListLoading
+);

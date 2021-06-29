@@ -4,8 +4,6 @@ import { Block, Text, Image, Loading } from "@components/index";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchMessageListLoadingSelector,
-  loadmoreMessageListLoadingSelector,
-  loadMoreMessageListNoMoreSelector,
   messageListSelector,
 } from "@modules/chat/selectors";
 import images from "@assets/images";
@@ -13,42 +11,16 @@ import { loadmoreMessageList } from "@modules/chat/slice";
 import { profileSelector } from "@modules/user/selectors";
 import colors from "@assets/colors";
 import { MESSAGES_TYPE } from "@common/constant";
+import keyExtractor from "@utils/keyExtractor";
 
 const ListMessage = ({ roomId }) => {
-  const loadMoreMessageListNoMore = useSelector(
-    loadMoreMessageListNoMoreSelector
-  );
-  const loadmoreMessageListLoading = useSelector(
-    loadmoreMessageListLoadingSelector
-  );
   const fetchMessageListLoading = useSelector(fetchMessageListLoadingSelector);
   const messageList = useSelector(messageListSelector);
   const profile = useSelector(profileSelector);
   const dispatch = useDispatch();
 
-  const onLoadMoreMessage = () => {
-    dispatch(
-      loadmoreMessageList({
-        data: {
-          roomId,
-        },
-      })
-    );
-  };
-
   const _renderListMessageItem = ({ item }) => (
-    <Block
-      row
-      middle={
-        item?.content === MESSAGES_TYPE.joined_room ||
-        item?.content === MESSAGES_TYPE.left_room
-      }
-      alignItemsStart={
-        item?.content !== MESSAGES_TYPE.joined_room &&
-        item?.content !== MESSAGES_TYPE.left_room
-      }
-      mv={8}
-    >
+    <Block row mv={8}>
       <Image
         source={item?.sender?.avatar}
         defaultImage={images.default_avatar}
@@ -66,20 +38,11 @@ const ListMessage = ({ roomId }) => {
           }
         >
           {item?.sender?.name || ""}{" "}
-          {(item?.content === MESSAGES_TYPE.joined_room ||
-            item?.content === MESSAGES_TYPE.left_room) && (
-            <Text medium c1>
-              {" "}
-              {item?.content}
-            </Text>
-          )}
+          <Text medium c1>
+            {" "}
+            {item?.content}
+          </Text>
         </Text>
-        {item?.content !== MESSAGES_TYPE.joined_room &&
-          item?.content !== MESSAGES_TYPE.left_room && (
-            <Text medium c1>
-              {item?.content}
-            </Text>
-          )}
       </Block>
     </Block>
   );
@@ -90,24 +53,24 @@ const ListMessage = ({ roomId }) => {
       {!fetchMessageListLoading && (
         <FlatList
           data={messageList}
-          keyExtractor={(item) => item.id}
+          keyExtractor={keyExtractor}
           inverted
-          onEndReached={() => {
-            if (
-              !loadMoreMessageListNoMore &&
-              !loadmoreMessageListLoading &&
-              messageList.length >= 100
-            ) {
-              onLoadMoreMessage();
-            }
-          }}
-          ListFooterComponent={() =>
-            loadmoreMessageListLoading && (
-              <Block center mv={5}>
-                <Loading />
-              </Block>
-            )
-          }
+          // onEndReached={() => {
+          //   if (
+          //     !loadMoreMessageListNoMore &&
+          //     !loadmoreMessageListLoading &&
+          //     messageList.length >= 100
+          //   ) {
+          //     onLoadMoreMessage();
+          //   }
+          // }}
+          // ListFooterComponent={() =>
+          //   loadmoreMessageListLoading && (
+          //     <Block center mv={5}>
+          //       <Loading />
+          //     </Block>
+          //   )
+          // }
           renderItem={_renderListMessageItem}
         />
       )}

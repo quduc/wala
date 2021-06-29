@@ -20,6 +20,7 @@ export const ListRoom = "ListRoom";
 
 export const ChatStack = "ChatStack";
 export const ChatScreen = "ChatScreen";
+export const ChatDetail = "ChatDetail";
 
 export const PlaylistDetailStack = "PlaylistDetailStack";
 export const AddSongsToPlaylistScreen = "AddSongsToPlaylistScreen";

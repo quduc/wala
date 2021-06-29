@@ -70,7 +70,7 @@ const CusomTabBottom = ({ state, navigation }) => {
                   iconNameActive: SvgComponent.homeActive,
                   iconName: SvgComponent.homeDeactive,
                 };
-              case screenTypes.PlaylistStack:
+              case screenTypes.ChatStack:
                 return {
                   iconNameActive: SvgComponent.docActive,
                   iconName: SvgComponent.doc,

@@ -1,32 +1,32 @@
 /* eslint-disable prefer-promise-reject-errors */
-import _ from 'lodash';
-import APISauce, { NETWORK_ERROR, TIMEOUT_ERROR } from 'apisauce';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import i18next from 'i18next';
-import { signOut } from '@modules/auth/slice';
-import Toast from 'react-native-toast-message';
-import { store } from '../../redux/configStore';
+import _ from "lodash";
+import APISauce, { NETWORK_ERROR, TIMEOUT_ERROR } from "apisauce";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import i18next from "i18next";
+import { signOut } from "@modules/auth/slice";
+import Toast from "react-native-toast-message";
+import { store } from "../../redux/configStore";
 
 import {
   TIME_OUT_REQUEST_API,
   HOST_DEV,
   STATUS_HTTPS,
   DEFAULT_MODE,
-} from '../config';
+} from "../config";
 
 let HEADERS = {
-  Accept: 'application/json',
-  'Cache-Control': 'no-cache',
-  'Content-Type': 'application/json;charset=utf-8',
+  Accept: "application/json",
+  "Cache-Control": "no-cache",
+  "Content-Type": "application/json;charset=utf-8",
 };
 
 let HEADERS_MULTIPLE_PART = {
-  Accept: 'application/json',
-  'Cache-Control': 'no-cache',
-  'Content-Type': 'multipart/form-data',
+  Accept: "application/json",
+  "Cache-Control": "no-cache",
+  "Content-Type": "multipart/form-data",
 };
 
-const setToken = _token => {
+const setToken = (_token) => {
   HEADERS = {
     ...HEADERS,
     Authorization: `Bearer ${_token}`,
@@ -40,7 +40,7 @@ const setToken = _token => {
 const getBaseURLWithMode = async () => {
   let baseUrl = `${HOST_DEV[DEFAULT_MODE]}`;
   try {
-    const mode = await AsyncStorage.getItem('mode');
+    const mode = await AsyncStorage.getItem("mode");
     if (mode) {
       baseUrl = `${HOST_DEV[mode]}`;
     }
@@ -48,7 +48,7 @@ const getBaseURLWithMode = async () => {
     console.log(e);
   }
 
-  return baseUrl;
+  return "http://localhost:3000";
 };
 
 export const apiGlobal = APISauce.create({
@@ -56,22 +56,22 @@ export const apiGlobal = APISauce.create({
   headers: HEADERS,
 });
 
-const throttledResetToLogin = async response => {
+const throttledResetToLogin = async (response) => {
   console.log(response);
   store.dispatch(signOut());
 };
 
 const showToastError = () => {
   Toast.show({
-    type: 'error',
+    type: "error",
     props: {
-      message: i18next.t('message:MSG_35'),
+      message: i18next.t("message:MSG_35"),
       onClose: () => Toast.hide(),
     },
   });
 };
 
-const handlingResponse = response =>
+const handlingResponse = (response) =>
   new Promise((resolve, reject) => {
     if (response.status === STATUS_HTTPS.UNAUTHENTICATED) {
       return throttledResetToLogin(response);
@@ -91,9 +91,9 @@ const handlingResponse = response =>
         reject({});
         return showToastError();
       default: {
-        console.log('****Error', response.data.meta);
+        console.log("****Error", response.data.meta);
         const error = {
-          errorMessage: '',
+          errorMessage: "",
         };
         const extraInfo = response?.data?.meta?.extraInfo;
         const errorCode = response?.data?.meta?.errorCode;
@@ -109,7 +109,7 @@ const handlingResponse = response =>
           error.errorMessage =
             i18next.t(`message:${response?.data?.meta?.errorCode}`) ||
             response?.data?.meta?.errorCode ||
-            '';
+            "";
         }
         return reject(error);
       }
@@ -118,34 +118,34 @@ const handlingResponse = response =>
 const baseApi = {
   post: async (endpoint, params) => {
     const baseURL = await getBaseURLWithMode();
-    console.log('*****POST', `${baseURL}${endpoint}`, params);
+    console.log("*****POST", `${baseURL}${endpoint}`, params);
     apiGlobal.setBaseURL(baseURL);
     apiGlobal.setHeaders(HEADERS);
     return apiGlobal
       .post(endpoint, params)
-      .then(response => handlingResponse(response));
+      .then((response) => handlingResponse(response));
   },
   get: async (endpoint, params) => {
     const baseURL = await getBaseURLWithMode();
-    console.log('*****GET', `${baseURL}${endpoint}`, params);
+    console.log("*****GET", `${baseURL}${endpoint}`, params);
     apiGlobal.setBaseURL(baseURL);
     apiGlobal.setHeaders(HEADERS);
     return apiGlobal
       .get(endpoint, params)
-      .then(response => handlingResponse(response));
+      .then((response) => handlingResponse(response));
   },
   put: async (endpoint, params) => {
     const baseURL = await getBaseURLWithMode();
-    console.log('*****PUT', `${baseURL}${endpoint}`, params);
+    console.log("*****PUT", `${baseURL}${endpoint}`, params);
     apiGlobal.setBaseURL(baseURL);
     apiGlobal.setHeaders(HEADERS);
     return apiGlobal
       .put(endpoint, params)
-      .then(response => handlingResponse(response));
+      .then((response) => handlingResponse(response));
   },
   postFormData: async (endpoint, params) => {
     const baseURL = await getBaseURLWithMode();
-    console.log('******POST_FORM_DATA', `${baseURL}${endpoint}`, params);
+    console.log("******POST_FORM_DATA", `${baseURL}${endpoint}`, params);
     apiGlobal.setBaseURL(baseURL);
     apiGlobal.setHeaders(HEADERS_MULTIPLE_PART);
 
@@ -157,16 +157,16 @@ const baseApi = {
     });
     return apiGlobal
       .post(endpoint, formData)
-      .then(response => handlingResponse(response));
+      .then((response) => handlingResponse(response));
   },
   delete: async (endpoint, params) => {
     const baseURL = await getBaseURLWithMode();
-    console.log('******DELETE', `${baseURL}${endpoint}`, params);
+    console.log("******DELETE", `${baseURL}${endpoint}`, params);
     apiGlobal.setBaseURL(baseURL);
     apiGlobal.setHeaders(HEADERS);
     return apiGlobal
       .delete(endpoint, {}, { data: params })
-      .then(response => handlingResponse(response));
+      .then((response) => handlingResponse(response));
   },
 };
 

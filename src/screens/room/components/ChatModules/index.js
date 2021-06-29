@@ -6,16 +6,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { pushMessageToList } from "@modules/chat/slice";
 import { useModal } from "@common/customHook";
 import { useTranslation } from "react-i18next";
-import { sendMessageLoadingSelector } from "@modules/chat/selectors";
 import {
   sendMessageSocket,
   subscribeGetMessageSocket,
   unSubscribeGetMessageSocket,
 } from "@modules/chat/socket";
 import { SocketIoSelector } from "@modules/home/selectors";
+import { sendMessageLoadingSelector } from "@modules/chat/selectors";
 import ListMessage from "./ListMessage";
+import reactotron from "reactotron-react-native";
 
-const ChatModule = ({ roomId }) => {
+const ChatModule = ({ userId }) => {
   const { t } = useTranslation(["auth", "common"]);
   const [messages, setMessage] = useState("");
   const [modal, contextHolder] = useModal();
@@ -25,6 +26,7 @@ const ChatModule = ({ roomId }) => {
 
   useEffect(() => {
     subscribeGetMessageSocket(socketIo, (res) => {
+      reactotron.log({ res });
       if (res?.data) {
         dispatch(
           pushMessageToList({
@@ -33,14 +35,13 @@ const ChatModule = ({ roomId }) => {
         );
       }
     });
-
     return () => unSubscribeGetMessageSocket(socketIo);
   }, []);
 
   const onSendMessage = () => {
     if (messages) {
       sendMessageSocket(socketIo, {
-        roomId,
+        userId,
         content: messages,
       });
       setMessage("");
@@ -53,7 +54,7 @@ const ChatModule = ({ roomId }) => {
         Today, 4:20pm
       </Text>
       <Block flex={1}>
-        <ListMessage roomId={roomId} />
+        <ListMessage />
       </Block>
       <TextInput
         mt={16}
