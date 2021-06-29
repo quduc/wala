@@ -1,25 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { FlatList } from 'react-native';
-import { Block, Text, Image, Loading } from '@components/index';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { FlatList } from "react-native";
+import { Block, Text, Image, Loading } from "@components/index";
+import { useDispatch, useSelector } from "react-redux";
 import {
   fetchMessageListLoadingSelector,
   loadmoreMessageListLoadingSelector,
   loadMoreMessageListNoMoreSelector,
   messageListSelector,
-} from '@modules/room/selectors';
-import images from '@assets/images';
-import { loadmoreMessageList } from '@modules/room/slice';
-import { profileSelector } from '@modules/user/selectors';
-import colors from '@assets/colors';
-import { MESSAGES_TYPE } from '@common/constant';
+} from "@modules/chat/selectors";
+import images from "@assets/images";
+import { loadmoreMessageList } from "@modules/chat/slice";
+import { profileSelector } from "@modules/user/selectors";
+import colors from "@assets/colors";
+import { MESSAGES_TYPE } from "@common/constant";
 
 const ListMessage = ({ roomId }) => {
   const loadMoreMessageListNoMore = useSelector(
-    loadMoreMessageListNoMoreSelector,
+    loadMoreMessageListNoMoreSelector
   );
   const loadmoreMessageListLoading = useSelector(
-    loadmoreMessageListLoadingSelector,
+    loadmoreMessageListLoadingSelector
   );
   const fetchMessageListLoading = useSelector(fetchMessageListLoadingSelector);
   const messageList = useSelector(messageListSelector);
@@ -32,7 +32,7 @@ const ListMessage = ({ roomId }) => {
         data: {
           roomId,
         },
-      }),
+      })
     );
   };
 
@@ -47,7 +47,8 @@ const ListMessage = ({ roomId }) => {
         item?.content !== MESSAGES_TYPE.joined_room &&
         item?.content !== MESSAGES_TYPE.left_room
       }
-      mv={8}>
+      mv={8}
+    >
       <Image
         source={item?.sender?.avatar}
         defaultImage={images.default_avatar}
@@ -62,12 +63,13 @@ const ListMessage = ({ roomId }) => {
             item?.sender?.name === profile.name
               ? colors.orange
               : colors.textPrimary
-          }>
-          {item?.sender?.name || ''}{' '}
+          }
+        >
+          {item?.sender?.name || ""}{" "}
           {(item?.content === MESSAGES_TYPE.joined_room ||
             item?.content === MESSAGES_TYPE.left_room) && (
             <Text medium c1>
-              {' '}
+              {" "}
               {item?.content}
             </Text>
           )}
@@ -88,7 +90,7 @@ const ListMessage = ({ roomId }) => {
       {!fetchMessageListLoading && (
         <FlatList
           data={messageList}
-          keyExtractor={item => item.id}
+          keyExtractor={(item) => item.id}
           inverted
           onEndReached={() => {
             if (

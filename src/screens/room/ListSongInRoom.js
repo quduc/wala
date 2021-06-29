@@ -1,24 +1,24 @@
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable react/jsx-wrap-multilines */
 /* eslint-disable no-return-assign */
-import React, { useState, useEffect, useRef } from 'react';
-import { FlatList, ImageBackground } from 'react-native';
-import Header from '@components/header';
-import { Block, Body, Text, Image } from '@components/index';
-import { useNavigation, useRoute } from '@react-navigation/core';
-import images from '@assets/images';
-import { useTranslation } from 'react-i18next';
-import SongItem from '@components/songItem';
-import SearchView from '@components/search';
-import { scale } from '@common/scale';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useState, useEffect, useRef } from "react";
+import { FlatList, ImageBackground } from "react-native";
+import Header from "@components/header";
+import { Block, Body, Text, Image } from "@components/index";
+import { useNavigation, useRoute } from "@react-navigation/core";
+import images from "@assets/images";
+import { useTranslation } from "react-i18next";
+import SongItem from "@components/songItem";
+import SearchView from "@components/search";
+import { scale } from "@common/scale";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getRoomDetailLoadingSelector,
   getRoomDetailSelector,
-} from '@modules/room/selectors';
-import { useModal } from '@common/customHook';
-import { getRoomDetail } from '@modules/room/slice';
-import { profileSelector } from '@modules/user/selectors';
+} from "@modules/chat/selectors";
+import { useModal } from "@common/customHook";
+import { getRoomDetail } from "@modules/chat/slice";
+import { profileSelector } from "@modules/user/selectors";
 
 export default function ListSongInRoom() {
   const router = useRoute();
@@ -32,7 +32,7 @@ export default function ListSongInRoom() {
   const [modal, contextHolder] = useModal();
   const flatListRef = useRef();
   const navigation = useNavigation();
-  const { t } = useTranslation(['room']);
+  const { t } = useTranslation(["room"]);
   const isHost = profile.id === room?.hostId;
 
   useEffect(() => {
@@ -41,17 +41,17 @@ export default function ListSongInRoom() {
         data: {
           roomId: room.id,
         },
-        onSuccess: res => {
+        onSuccess: (res) => {
           setListSongSearch(res.data.allSong);
           setListSong(res.data.allSong);
         },
-        onError: e => {
+        onError: (e) => {
           modal.error({
-            title: t('common:title_error'),
+            title: t("common:title_error"),
             content: e.errorMessage,
           });
         },
-      }),
+      })
     );
   }, []);
 
@@ -66,7 +66,7 @@ export default function ListSongInRoom() {
   useEffect(() => {
     if (listSong.length !== 0 && room.nowPlaying) {
       const indexPlayingInAllSong = listSong.findIndex(
-        item => item.id === room.nowPlaying.id,
+        (item) => item.id === room.nowPlaying.id
       );
       indexPlayingInAllSong > 1 &&
         setTimeout(() => {
@@ -82,11 +82,11 @@ export default function ListSongInRoom() {
     navigation.goBack();
   };
 
-  const _onChangeText = value => {
-    const newList = listSong.filter(item =>
+  const _onChangeText = (value) => {
+    const newList = listSong.filter((item) =>
       item?.song?.title
         .toLocaleLowerCase()
-        .includes(value.toLocaleLowerCase().trim()),
+        .includes(value.toLocaleLowerCase().trim())
     );
     setListSongSearch(newList);
   };
@@ -98,7 +98,8 @@ export default function ListSongInRoom() {
         style={{
           paddingHorizontal: scale(16),
         }}
-        imageStyle={{ borderRadius: 10, opacity: 0.5 }}>
+        imageStyle={{ borderRadius: 10, opacity: 0.5 }}
+      >
         <Header
           roomName={room.name}
           roomCode={` (${room.code})`}
@@ -112,8 +113,8 @@ export default function ListSongInRoom() {
           />
           <Block flex={1} ml={16}>
             <Text medium c1>
-              {t('room:hostBy', {
-                hostName: isHost ? t('room:you') : room?.host?.name,
+              {t("room:hostBy", {
+                hostName: isHost ? t("room:you") : room?.host?.name,
               })}
             </Text>
             <Text medium c1 mt={4} numberOfLines={2}>
@@ -124,14 +125,14 @@ export default function ListSongInRoom() {
       </ImageBackground>
 
       <SearchView
-        placeholder='Search'
+        placeholder="Search"
         m={16}
         onChangeText={_onChangeText}
         maxLength={254}
       />
 
       <FlatList
-        ref={ref => (flatListRef.current = ref)}
+        ref={(ref) => (flatListRef.current = ref)}
         onScrollToIndexFailed={() => {}}
         showsVerticalScrollIndicator={false}
         style={{ marginHorizontal: 16 }}

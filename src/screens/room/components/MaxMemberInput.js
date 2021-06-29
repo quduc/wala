@@ -1,21 +1,21 @@
 /* eslint-disable react/jsx-wrap-multilines */
-import React from 'react';
-import { Block, Text } from '@components/index';
-import { TextInput as RNTextInput, StyleSheet } from 'react-native';
-import colors from '@assets/colors';
-import fonts from '@assets/fontFamily';
-import * as screenTypes from '@navigation/screenTypes';
-import { moderateScale, verticalScale } from '@common/scale';
-import { useSelector } from 'react-redux';
-import { getRoomDetailSelector } from '@modules/room/selectors';
+import React from "react";
+import { Block, Text } from "@components/index";
+import { TextInput as RNTextInput, StyleSheet } from "react-native";
+import colors from "@assets/colors";
+import fonts from "@assets/fontFamily";
+import * as screenTypes from "@navigation/screenTypes";
+import { moderateScale, verticalScale } from "@common/scale";
+import { useSelector } from "react-redux";
+import { getRoomDetailSelector } from "@modules/chat/selectors";
 
 const MaxMemberInput = ({ formik, fromScreen }) => {
   const roomDetail = useSelector(getRoomDetailSelector);
-  const handleTrimWhenBlurInput = e => {
+  const handleTrimWhenBlurInput = (e) => {
     let value = formik.values.maxMember
       .trim()
-      .replace(/(\D)/g, '')
-      .replace(/^(0*)/, '');
+      .replace(/(\D)/g, "")
+      .replace(/^(0*)/, "");
 
     if (
       fromScreen === screenTypes.UpdateRoomScreen &&
@@ -26,11 +26,11 @@ const MaxMemberInput = ({ formik, fromScreen }) => {
     }
 
     formik.setFieldValue(
-      'maxMember',
+      "maxMember",
       // eslint-disable-next-line no-useless-escape
-      value,
+      value
     );
-    formik.handleBlur('maxMember')(e);
+    formik.handleBlur("maxMember")(e);
   };
 
   return (
@@ -43,9 +43,9 @@ const MaxMemberInput = ({ formik, fromScreen }) => {
             styles.rnTextInputError,
         ]}
         value={formik.values.maxMember}
-        onChangeText={formik.handleChange('maxMember')}
-        onBlur={e => handleTrimWhenBlurInput(e)}
-        keyboardType='number-pad'
+        onChangeText={formik.handleChange("maxMember")}
+        onBlur={(e) => handleTrimWhenBlurInput(e)}
+        keyboardType="number-pad"
         maxLength={3}
       />
       {formik.errors.maxMember && formik.touched.maxMember && (
@@ -69,8 +69,8 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.error,
   },
   imageBackground: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingVertical: verticalScale(32),
     backgroundColor: colors.gray,
     borderRadius: moderateScale(10),

@@ -1,19 +1,19 @@
-import 'react-native-gesture-handler';
-import React, { useEffect, useState } from 'react';
-import { Keyboard } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import "react-native-gesture-handler";
+import React, { useEffect, useState } from "react";
+import { Keyboard } from "react-native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import * as screenTypes from '@navigation/screenTypes';
+import * as screenTypes from "@navigation/screenTypes";
 
-import { Block, Icon, Touchable } from '@components/index';
-import SvgComponent from '@assets/svg';
-import colors from '@assets/colors';
-import NotificationIcon from '@screens/notification/components/NotificationIcon';
-import HomeStack from './HomeStack';
-import PlaylistStack from './PlaylistStack';
-import UserStack from './UserStack';
-import NotificationStack from './NotificationStack';
-import CreateRoomStack from './CreateRoomStack';
+import { Block, Icon, Touchable } from "@components/index";
+import SvgComponent from "@assets/svg";
+import colors from "@assets/colors";
+import NotificationIcon from "@screens/notification/components/NotificationIcon";
+import HomeStack from "./HomeStack";
+import ChatStack from "./ChatStack";
+import UserStack from "./UserStack";
+import NotificationStack from "./NotificationStack";
+import CreateRoomStack from "./CreateRoomStack";
 
 const BottomTab = createBottomTabNavigator();
 
@@ -21,12 +21,12 @@ const CusomTabBottom = ({ state, navigation }) => {
   const [showTab, setShowTab] = useState(true);
 
   useEffect(() => {
-    Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
-    Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
+    Keyboard.addListener("keyboardDidShow", _keyboardDidShow);
+    Keyboard.addListener("keyboardDidHide", _keyboardDidHide);
 
     return () => {
-      Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
-      Keyboard.removeListener('keyboardDidHide', _keyboardDidHide);
+      Keyboard.removeListener("keyboardDidShow", _keyboardDidShow);
+      Keyboard.removeListener("keyboardDidHide", _keyboardDidHide);
     };
   }, []);
 
@@ -46,7 +46,7 @@ const CusomTabBottom = ({ state, navigation }) => {
 
           const onPress = () => {
             const event = navigation.emit({
-              type: 'tabPress',
+              type: "tabPress",
               target: route.key,
               canPreventDefault: true,
             });
@@ -58,7 +58,7 @@ const CusomTabBottom = ({ state, navigation }) => {
 
           const onLongPress = () => {
             navigation.emit({
-              type: 'tabLongPress',
+              type: "tabLongPress",
               target: route.key,
             });
           };
@@ -104,11 +104,12 @@ const CusomTabBottom = ({ state, navigation }) => {
               onPress={onPress}
               onLongPress={onLongPress}
               key={route.name}
-              p={10}>
+              p={10}
+            >
               {route.name === screenTypes.NotificationStack && (
                 <NotificationIcon>
                   <Icon
-                    imgType='svg'
+                    imgType="svg"
                     xml={
                       isFocused ? getIcon().iconNameActive : getIcon().iconName
                     }
@@ -117,7 +118,7 @@ const CusomTabBottom = ({ state, navigation }) => {
               )}
               {route.name !== screenTypes.NotificationStack && (
                 <Icon
-                  imgType='svg'
+                  imgType="svg"
                   xml={
                     isFocused ? getIcon().iconNameActive : getIcon().iconName
                   }
@@ -135,17 +136,14 @@ const CusomTabBottom = ({ state, navigation }) => {
 
 function BottomTabs() {
   return (
-    <BottomTab.Navigator tabBar={props => <CusomTabBottom {...props} />}>
+    <BottomTab.Navigator tabBar={(props) => <CusomTabBottom {...props} />}>
       <BottomTab.Screen name={screenTypes.HomeStack} component={HomeStack} />
-      <BottomTab.Screen
-        name={screenTypes.PlaylistStack}
-        component={PlaylistStack}
-      />
+      <BottomTab.Screen name={screenTypes.ChatStack} component={ChatStack} />
       <BottomTab.Screen
         name={screenTypes.CreateRoomStack}
         component={CreateRoomStack}
         listeners={({ navigation }) => ({
-          tabPress: event => {
+          tabPress: (event) => {
             event.preventDefault();
             navigation.navigate(screenTypes.CreateRoomScreen);
           },

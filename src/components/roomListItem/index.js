@@ -1,24 +1,24 @@
-import React from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { Block, Text, Icon, Image, Touchable } from '@components/index';
-import Toast from 'react-native-toast-message';
-import * as screenTypes from '@navigation/screenTypes';
-import colors from '@assets/colors';
-import SvgComponent from '@assets/svg';
-import LinearGradient from 'react-native-linear-gradient';
+import React from "react";
+import { useNavigation } from "@react-navigation/native";
+import { Block, Text, Icon, Image, Touchable } from "@components/index";
+import Toast from "react-native-toast-message";
+import * as screenTypes from "@navigation/screenTypes";
+import colors from "@assets/colors";
+import SvgComponent from "@assets/svg";
+import LinearGradient from "react-native-linear-gradient";
 
-import { MESSAGES_TYPE, ROOM_MODE, TARGET_MEMBER } from '@common/constant';
-import { useDispatch, useSelector } from 'react-redux';
-import { userJoinRoom } from '@modules/room/slice';
-import { useTranslation } from 'react-i18next';
-import { JoinRoomSocket, sendMessageSocket } from '@modules/room/socket';
-import { SocketIoSelector } from '@modules/home/selectors';
-import images from '@assets/images';
-import { profileSelector } from '@modules/user/selectors';
-import SongEffect from './SongEffect';
+import { MESSAGES_TYPE, ROOM_MODE, TARGET_MEMBER } from "@common/constant";
+import { useDispatch, useSelector } from "react-redux";
+import { userJoinRoom } from "@modules/chat/slice";
+import { useTranslation } from "react-i18next";
+import { JoinRoomSocket, sendMessageSocket } from "@modules/chat/socket";
+import { SocketIoSelector } from "@modules/home/selectors";
+import images from "@assets/images";
+import { profileSelector } from "@modules/user/selectors";
+import SongEffect from "./SongEffect";
 
 const RoomListItem = ({ item, onCancel }) => {
-  const { t } = useTranslation(['room', 'common']);
+  const { t } = useTranslation(["room", "common"]);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const socketIo = useSelector(SocketIoSelector);
@@ -36,14 +36,14 @@ const RoomListItem = ({ item, onCancel }) => {
 
   const onPress = () => {
     if (item?.type === TARGET_MEMBER[1].value) {
-      const membersId = item.members.map(item => item.id);
+      const membersId = item.members.map((item) => item.id);
       if (membersId.includes(profile.id)) {
         onJoinRoom();
       } else {
         return Toast.show({
-          type: 'error',
+          type: "error",
           props: {
-            message: t('txt_not_permission_join_room'),
+            message: t("txt_not_permission_join_room"),
             onClose: () => Toast.hide(),
           },
         });
@@ -68,15 +68,15 @@ const RoomListItem = ({ item, onCancel }) => {
           });
           goToRoomDetail();
         },
-        onError: e => {
+        onError: (e) => {
           Toast.show({
-            type: 'error',
+            type: "error",
             props: {
               message: e.errorMessage,
             },
           });
         },
-      }),
+      })
     );
   };
 
@@ -90,10 +90,10 @@ const RoomListItem = ({ item, onCancel }) => {
         />
         <Block ml={9} pr={50}>
           <Text extraBold c1>
-            {item?.name || ''}
+            {item?.name || ""}
           </Text>
           <Text medium c2 color={colors.textGrayDark} mt={2}>
-            {item?.hostName || ''}
+            {item?.hostName || ""}
           </Text>
           <Text medium c1 color={colors.textGrayLight} mt={2}>
             {item?.description}
@@ -105,17 +105,17 @@ const RoomListItem = ({ item, onCancel }) => {
         <Image
           uri={item?.cover}
           defaultImage={images.room_default}
-          width='100%'
+          width="100%"
           height={180}
           borderRadius={10}
         />
         <SongEffect item={item} />
         <LinearGradient
           locations={[0, 1]}
-          colors={['transparent', 'rgba(0,0,0,1)']}
+          colors={["transparent", "rgba(0,0,0,1)"]}
           style={{
-            backgroundColor: 'transparent',
-            position: 'absolute',
+            backgroundColor: "transparent",
+            position: "absolute",
             top: 0,
             bottom: 0,
             left: 0,
@@ -132,7 +132,7 @@ const RoomListItem = ({ item, onCancel }) => {
               item?.total === item?.number
                 ? item?.number - Math.cell(item?.number * 0.2)
                 : item?.total
-            } ${item?.members?.length >= 1 ? '+' : ''}`}
+            } ${item?.members?.length >= 1 ? "+" : ""}`}
           </Text>
         </Block>
         <Block row>

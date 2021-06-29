@@ -1,60 +1,45 @@
 // /* eslint-disable indent */
-import React, { useImperativeHandle } from 'react';
-import { FlatList, Keyboard } from 'react-native';
-import { Loading, RoomListItem, Text } from '@components/index';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  roomsSelector,
-  loadmoreRoomsLoadingSelector,
-  loadMoreRoomsNoMoreSelector,
-  fetchRoomsLoadingSelector,
-} from '@modules/room/selectors';
-
+import React, { useImperativeHandle } from "react";
+import { FlatList, Keyboard } from "react-native";
+import { Loading, RoomListItem, Text } from "@components/index";
+import { useDispatch, useSelector } from "react-redux";
 import {
   fetchUserSelector,
   fetchUserLoadingSelector,
   loadmoreFetchUserLoadingSelector,
   loadmoreFetchUserNoMoreSelector,
-} from '@modules/user/selectors';
-import { fetchUser, loadmoreUsers } from '@modules/user/slice';
-import Toast from 'react-native-toast-message';
-import SongItemHome from '@screens/home/components/SongItemSearch';
-import { fetchRooms, loadmoreRooms } from '@modules/room/slice';
-import { verticalScale } from '@common/scale';
-import { useTranslation } from 'react-i18next';
-import { LIMIT_ROOM, LIMIT_USER } from '@common/constant';
-import UserItem from './UserItem';
+} from "@modules/user/selectors";
+import { fetchUser, loadmoreUsers } from "@modules/user/slice";
+import Toast from "react-native-toast-message";
+import SongItemHome from "@screens/home/components/SongItemSearch";
+import { verticalScale } from "@common/scale";
+import { useTranslation } from "react-i18next";
+import { LIMIT_USER } from "@common/constant";
+import UserItem from "./UserItem";
 
 const SearchData = React.forwardRef((props, ref) => {
   const { tabName, valueSearch, onCancel } = props;
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const listRoom = useSelector(roomsSelector);
   const listUser = useSelector(fetchUserSelector);
 
   const loadingUser = useSelector(fetchUserLoadingSelector);
-  const loadingRoom = useSelector(fetchRoomsLoadingSelector);
   const loadmoreUsersLoading = useSelector(loadmoreFetchUserLoadingSelector);
   const loadmoreUsersNoMore = useSelector(loadmoreFetchUserNoMoreSelector);
-
-  const loadmoreRoomsLoading = useSelector(loadmoreRoomsLoadingSelector);
-  const loadmoreRoomsNoMore = useSelector(loadMoreRoomsNoMoreSelector);
 
   useImperativeHandle(ref, () => ({
     onSearch() {
       switch (tabName) {
-        case 'songs': {
+        case "songs": {
           getListSongYoutube();
           break;
         }
-        case 'users': {
+        case "users": {
           onFetchUsers();
           break;
         }
-        default: {
-          onFetchRooms();
-          break;
-        }
+        default:
+          null;
       }
       Keyboard.dismiss();
     },
@@ -64,22 +49,14 @@ const SearchData = React.forwardRef((props, ref) => {
     dispatch(
       fetchUser({
         data: { keyword: valueSearch },
-        onError: e => {
+        onError: (e) => {
           showError(e.errorMessage);
         },
-      }),
+      })
     );
   };
 
-  const onFetchRooms = () => {
-    dispatch(
-      fetchRooms({
-        params: {
-          keyword: valueSearch,
-        },
-      }),
-    );
-  };
+  const onFetchRooms = () => {};
 
   const getListSongYoutube = () => {
     dispatch(
@@ -87,10 +64,10 @@ const SearchData = React.forwardRef((props, ref) => {
         data: {
           keyword: valueSearch,
         },
-        onError: e => {
+        onError: (e) => {
           showError(e.errorMessage);
         },
-      }),
+      })
     );
   };
 
@@ -100,29 +77,16 @@ const SearchData = React.forwardRef((props, ref) => {
         data: {
           keyword: valueSearch,
         },
-        onError: e => {
+        onError: (e) => {
           showError(e.errorMessage);
         },
-      }),
+      })
     );
   };
 
-  const onLoadMoreRooms = () => {
-    dispatch(
-      loadmoreRooms({
-        data: {
-          keyword: valueSearch,
-        },
-        onError: e => {
-          showError(e.errorMessage);
-        },
-      }),
-    );
-  };
-
-  const showError = message => {
+  const showError = (message) => {
     Toast.show({
-      type: 'error',
+      type: "error",
       props: {
         message,
       },
@@ -131,10 +95,10 @@ const SearchData = React.forwardRef((props, ref) => {
 
   const onHandleLoadMore = () => {
     switch (tabName) {
-      case 'songs': {
+      case "songs": {
         break;
       }
-      case 'users': {
+      case "users": {
         if (
           !loadmoreUsersNoMore &&
           !loadmoreUsersLoading &&
@@ -144,24 +108,16 @@ const SearchData = React.forwardRef((props, ref) => {
         }
         break;
       }
-      default: {
-        if (
-          !loadmoreRoomsLoading &&
-          !loadmoreRoomsNoMore &&
-          listRoom.length >= LIMIT_ROOM
-        ) {
-          onLoadMoreRooms();
-        }
-        break;
-      }
+      default:
+        null;
     }
   };
 
   const renderItemSearch = (item, index) => {
     let renderItem = null;
-    if (tabName === 'songs') {
+    if (tabName === "songs") {
       renderItem = <SongItemHome item={item} />;
-    } else if (tabName === 'users') {
+    } else if (tabName === "users") {
       renderItem = <UserItem item={item} index={index} valueSearch />;
     } else {
       renderItem = <RoomListItem item={item} onCancel={onCancel} />;
@@ -171,12 +127,10 @@ const SearchData = React.forwardRef((props, ref) => {
 
   const getData = () => {
     let listData = null;
-    if (tabName === 'songs') {
+    if (tabName === "songs") {
       listData = listUser;
-    } else if (tabName === 'users') {
+    } else if (tabName === "users") {
       listData = listUser;
-    } else {
-      listData = listRoom;
     }
     return listData;
   };
@@ -189,11 +143,11 @@ const SearchData = React.forwardRef((props, ref) => {
       showsHorizontalScrollIndicator={false}
       style={{ marginTop: verticalScale(16) }}
       ListEmptyComponent={
-        loadingRoom || loadingUser ? (
+        loadingUser ? (
           <Loading />
         ) : (
           <Text c1 center middle>
-            {t('common:noData')}
+            {t("common:noData")}
           </Text>
         )
       }

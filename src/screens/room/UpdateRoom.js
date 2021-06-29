@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-wrap-multilines */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Body,
   Block,
@@ -7,35 +7,35 @@ import {
   Touchable,
   TextInput,
   Button,
-} from '@components/index';
+} from "@components/index";
 
-import colors from '@assets/colors';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { useTranslation } from 'react-i18next';
-import { useFormik } from 'formik';
-import i18next from 'i18next';
-import { useDispatch, useSelector } from 'react-redux';
-import { updateRoom } from '@modules/room/slice';
-import { useModal } from '@common/customHook';
-import * as screenTypes from '@navigation/screenTypes';
-import { createRoomLoadingSelector } from '@modules/room/selectors';
-import { TARGET_MEMBER, RULE_OF_ROOM } from '@common/constant';
-import ModalSelectOption from './components/ModalSelectOption';
-import ImagePicker from './components/ImagePicker';
-import MaxMemberInput from './components/MaxMemberInput';
+import colors from "@assets/colors";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
+import { useFormik } from "formik";
+import i18next from "i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { updateRoom } from "@modules/chat/slice";
+import { useModal } from "@common/customHook";
+import * as screenTypes from "@navigation/screenTypes";
+import { createRoomLoadingSelector } from "@modules/chat/selectors";
+import { TARGET_MEMBER, RULE_OF_ROOM } from "@common/constant";
+import ModalSelectOption from "./components/ModalSelectOption";
+import ImagePicker from "./components/ImagePicker";
+import MaxMemberInput from "./components/MaxMemberInput";
 
-const validate = values => {
+const validate = (values) => {
   const errors = {};
 
   if (!values.roomName.trim()) {
-    errors.roomName = i18next.t('message:MSG_2', {
-      field: i18next.t('common:roomName'),
+    errors.roomName = i18next.t("message:MSG_2", {
+      field: i18next.t("common:roomName"),
     });
   }
 
-  if (!values.maxMember.trim() || values.maxMember === '0') {
-    errors.maxMember = i18next.t('message:MSG_2', {
-      field: i18next.t('common:maxMember'),
+  if (!values.maxMember.trim() || values.maxMember === "0") {
+    errors.maxMember = i18next.t("message:MSG_2", {
+      field: i18next.t("common:maxMember"),
     });
   }
 
@@ -44,8 +44,8 @@ const validate = values => {
 
 const UpdateRoom = () => {
   const navigation = useNavigation();
-  const { t } = useTranslation(['room', 'comom']);
-  const [uriImage, setUriImage] = useState('');
+  const { t } = useTranslation(["room", "comom"]);
+  const [uriImage, setUriImage] = useState("");
   const [targetMember, setTargetMember] = useState(TARGET_MEMBER[0].value);
   const [rule, setRule] = useState(RULE_OF_ROOM[0].value);
   const [modal, contextHolder] = useModal();
@@ -54,7 +54,7 @@ const UpdateRoom = () => {
   const route = useRoute();
 
   const formik = useFormik({
-    initialValues: { roomName: '', aboutRoom: '', maxMember: '10' },
+    initialValues: { roomName: "", aboutRoom: "", maxMember: "10" },
     validate,
   });
 
@@ -91,13 +91,13 @@ const UpdateRoom = () => {
         onSuccess: () => {
           navigation.goBack();
         },
-        onError: e => {
+        onError: (e) => {
           modal.error({
-            title: t('common:title_error'),
+            title: t("common:title_error"),
             content: e.errorMessage,
           });
         },
-      }),
+      })
     );
   };
 
@@ -120,24 +120,25 @@ const UpdateRoom = () => {
         ph={16}
         bg={colors.blackPrimary}
         borderTopRightRadius={20}
-        borderTopLeftRadius={20}>
+        borderTopLeftRadius={20}
+      >
         <Block row mt={32} mb={24}>
           <Text medium c1 color={colors.blackPrimary} left>
             Cancel
           </Text>
           <Text bold h5 center flex={1}>
-            {t('room:editRoom')}
+            {t("room:editRoom")}
           </Text>
           <Touchable onPress={onGoBack}>
             <Text medium c1 color={colors.orange} left>
-              {t('txt_btn_cancel')}
+              {t("txt_btn_cancel")}
             </Text>
           </Touchable>
         </Block>
 
-        <Body bg='transparent' scroll keyboardAvoid loading={createRoomLoading}>
+        <Body bg="transparent" scroll keyboardAvoid loading={createRoomLoading}>
           <TextInput
-            placeholder={t('placeholder_room_name')}
+            placeholder={t("placeholder_room_name")}
             maxLength={30}
             fontSize={12}
             iconRight={
@@ -147,8 +148,8 @@ const UpdateRoom = () => {
               </Text>
             }
             value={formik.values.roomName}
-            onChangeText={formik.handleChange('roomName')}
-            onBlur={e => handleTrimWhenBlurInput('roomName', e)}
+            onChangeText={formik.handleChange("roomName")}
+            onBlur={(e) => handleTrimWhenBlurInput("roomName", e)}
             error={formik.errors.roomName && formik.touched.roomName}
             errorMessage={formik.errors.roomName}
           />
@@ -158,7 +159,7 @@ const UpdateRoom = () => {
             multiline
             numberOfLines={10}
             fontSize={12}
-            placeholder={t('placeholder_about_room')}
+            placeholder={t("placeholder_about_room")}
             maxLength={100}
             iconRight={
               <Block flex={1} justifyEnd ml={5}>
@@ -169,8 +170,8 @@ const UpdateRoom = () => {
               </Block>
             }
             value={formik.values.aboutRoom}
-            onChangeText={formik.handleChange('aboutRoom')}
-            onBlur={e => handleTrimWhenBlurInput('aboutRoom', e)}
+            onChangeText={formik.handleChange("aboutRoom")}
+            onBlur={(e) => handleTrimWhenBlurInput("aboutRoom", e)}
             error={formik.errors.aboutRoom && formik.touched.aboutRoom}
             errorMessage={formik.errors.aboutRoom}
           />
@@ -178,7 +179,7 @@ const UpdateRoom = () => {
           <ImagePicker uriImage={uriImage} setUriImage={setUriImage} ignore />
 
           <Text mt={18} gradient medium>
-            {t('text_who_can_join')}
+            {t("text_who_can_join")}
           </Text>
 
           <ModalSelectOption
@@ -189,7 +190,7 @@ const UpdateRoom = () => {
           />
 
           <Text mt={18} gradient medium>
-            {t('max_user')}
+            {t("max_user")}
           </Text>
 
           <MaxMemberInput
@@ -198,7 +199,7 @@ const UpdateRoom = () => {
           />
 
           <Text mt={18} gradient medium>
-            {t('txt_skip_rule')}
+            {t("txt_skip_rule")}
           </Text>
 
           <ModalSelectOption
@@ -215,9 +216,10 @@ const UpdateRoom = () => {
             borderRadius={3}
             bg={colors.orange}
             disabled={isDisableButton()}
-            onPress={onUpdateRoom}>
+            onPress={onUpdateRoom}
+          >
             <Text medium c1 color={colors.white}>
-              {t('txt_done')}
+              {t("txt_done")}
             </Text>
           </Button>
         </Body>

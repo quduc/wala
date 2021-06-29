@@ -1,5 +1,4 @@
-import { put, call, takeEvery, select, takeLatest } from 'redux-saga/effects';
-import { getRoomDetail } from '@modules/room/slice';
+import { put, call, takeEvery, select, takeLatest } from "redux-saga/effects";
 import {
   fetchProfile,
   fetchProfileSucceeded,
@@ -44,7 +43,7 @@ import {
   contactUs,
   contactUsFailed,
   contactUsSucceeded,
-} from './slice';
+} from "./slice";
 
 import {
   fetchProfileApi,
@@ -62,10 +61,10 @@ import {
   fetchNotiSettingApi,
   updateNotiSettingApi,
   contactUsApi,
-} from './services';
-import { LIMIT_USER } from '@common/constant';
-import { friendListOffsetSelector, usersOffsetSelector } from './selectors';
-import reactotron from 'reactotron-react-native';
+} from "./services";
+import { LIMIT_USER } from "@common/constant";
+import { friendListOffsetSelector, usersOffsetSelector } from "./selectors";
+import reactotron from "reactotron-react-native";
 
 function* fetchProfileSideEffect() {
   try {
@@ -81,11 +80,6 @@ function* followFriendSideEffect({ payload }) {
     const response = yield call(followFriendApi, payload.data);
     yield put(followFriendSuccecced(response));
     if (payload.data.roomId) {
-      yield put(
-        getRoomDetail({
-          data: { roomId: payload.data.roomId },
-        }),
-      );
     } else if (payload.data.userType) {
       yield put(
         fetchUser({
@@ -93,7 +87,7 @@ function* followFriendSideEffect({ payload }) {
             keyword: payload.data.valueSearch,
             type: payload.data.userType,
           },
-        }),
+        })
       );
     }
     if (payload.onSuccess) yield call(payload.onSuccess, response);
@@ -107,20 +101,14 @@ function* addFriendSideEffect({ payload }) {
   try {
     const response = yield call(addFriendApi, payload.data);
     yield put(addFriendSuccecced({ ...response, payload }));
-    if (payload.data.roomId) {
-      yield put(
-        getRoomDetail({
-          data: { roomId: payload.data.roomId },
-        }),
-      );
-    } else if (payload.data.userType) {
+    if (payload.data.userType) {
       yield put(
         fetchUser({
           data: {
             keyword: payload.data.valueSearch,
             type: payload.data.userType,
           },
-        }),
+        })
       );
     }
     if (payload.onSuccess) yield call(payload.onSuccess, response);
@@ -156,11 +144,6 @@ function* favouriteHostSideEffect({ payload }) {
     const response = yield call(favouriteHostApi, payload.data);
     yield put(favouriteHostSuccecced(response));
     if (payload.onSuccess) yield call(payload.onSuccess, response);
-    yield put(
-      getRoomDetail({
-        data: { roomId: payload.data.roomId },
-      }),
-    );
   } catch (error) {
     yield put(favouriteHostFailed(error));
     if (payload.onError) yield call(payload.onError, error);

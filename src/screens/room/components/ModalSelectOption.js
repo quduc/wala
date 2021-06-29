@@ -1,18 +1,18 @@
-import colors from '@assets/colors';
-import SvgComponent from '@assets/svg';
-import { Block, Text, Icon, Touchable, ListAvatar } from '@components/index';
-import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
-import Modal from 'react-native-modal';
-import { StyleSheet } from 'react-native';
-import * as screenTypes from '@navigation/screenTypes';
-import { MAP_TYPE_AND_RULE, TARGET_MEMBER } from '@common/constant';
-import { useSelector } from 'react-redux';
-import { listenersSelector } from '@modules/room/selectors';
-import { useTranslation } from 'react-i18next';
+import colors from "@assets/colors";
+import SvgComponent from "@assets/svg";
+import { Block, Text, Icon, Touchable, ListAvatar } from "@components/index";
+import { useNavigation } from "@react-navigation/native";
+import React, { useState } from "react";
+import Modal from "react-native-modal";
+import { StyleSheet } from "react-native";
+import * as screenTypes from "@navigation/screenTypes";
+import { MAP_TYPE_AND_RULE, TARGET_MEMBER } from "@common/constant";
+import { useSelector } from "react-redux";
+import { listenersSelector } from "@modules/chat/selectors";
+import { useTranslation } from "react-i18next";
 
 const ModalSelectOption = ({ items, value, setValue, ignoreAddListeners }) => {
-  const { t } = useTranslation(['room', 'comom']);
+  const { t } = useTranslation(["room", "comom"]);
   const navigation = useNavigation();
   const [visible, setVisible] = useState();
   const listeners = useSelector(listenersSelector);
@@ -21,7 +21,7 @@ const ModalSelectOption = ({ items, value, setValue, ignoreAddListeners }) => {
 
   const onClose = () => setVisible(false);
 
-  const onChangeValue = val => {
+  const onChangeValue = (val) => {
     setValue(val);
     onClose();
   };
@@ -44,7 +44,8 @@ const ModalSelectOption = ({ items, value, setValue, ignoreAddListeners }) => {
         mb={8}
         pb={8}
         onPress={onToggle}
-        borderBottom={!visible}>
+        borderBottom={!visible}
+      >
         <Text c1 medium ml={3}>
           {MAP_TYPE_AND_RULE[value]}
         </Text>
@@ -58,13 +59,15 @@ const ModalSelectOption = ({ items, value, setValue, ignoreAddListeners }) => {
         isVisible={visible}
         onBackdropPress={onClose}
         onBackButtonPress={onClose}
-        backdropOpacity={0.6}>
+        backdropOpacity={0.6}
+      >
         <Block
           ph={30}
           pv={24}
           bg={colors.blackPrimary}
           borderTopLeftRadius={20}
-          borderTopRightRadius={20}>
+          borderTopRightRadius={20}
+        >
           {items.map((item, index) => (
             <Touchable
               key={item.title}
@@ -74,7 +77,8 @@ const ModalSelectOption = ({ items, value, setValue, ignoreAddListeners }) => {
               justifyBetween
               middle
               borderBottom={index === 0}
-              onPress={() => onChangeValue(item.value)}>
+              onPress={() => onChangeValue(item.value)}
+            >
               <Block flex={1}>
                 <Text extraBold>{item.title}</Text>
                 <Text medium c2>
@@ -95,11 +99,12 @@ const ModalSelectOption = ({ items, value, setValue, ignoreAddListeners }) => {
           row
           justifyBetween
           middle
-          onPress={goToAddListenersScreen}>
+          onPress={goToAddListenersScreen}
+        >
           <Text c1 medium ml={3}>
             {listeners.length === 0
-              ? t('room:txt_add_listeners')
-              : t('room:txt_edit_listeners')}
+              ? t("room:txt_add_listeners")
+              : t("room:txt_edit_listeners")}
           </Text>
           <ListAvatar
             list={listeners}
@@ -118,7 +123,7 @@ const ModalSelectOption = ({ items, value, setValue, ignoreAddListeners }) => {
 const styles = StyleSheet.create({
   modal: {
     margin: 0,
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
   },
 });
 
