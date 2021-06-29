@@ -111,13 +111,6 @@ export const unSubNotificationSocket = (socketIo) => {
   }
 };
 
-export const changeRoomModeSocket = (socketIo) => {
-  const result = checkConnectSocket(socketIo);
-  if (result) {
-    socketIo.emit("changeRoomMode");
-  }
-};
-
 export const voteTourSocket = (socketIo, type) => {
   const result = checkConnectSocket(socketIo);
   if (result) {

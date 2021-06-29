@@ -28,8 +28,6 @@ export const CreateRoomStack = "CreateRoomStack";
 export const CreateRoomScreen = "CreateRoomScreen";
 
 export const UpdateRoomScreen = "UpdateRoomScreen";
-export const RoomDetail = "RoomDetail";
-export const ListSongInRoom = "ListSongInRoom";
 export const SuggestSong = "SuggestSong";
 
 export const NotificationScreen = "NotificationScreen";
