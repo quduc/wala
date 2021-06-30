@@ -1,8 +1,13 @@
-import { createSelector } from 'reselect';
+import { createSelector } from "reselect";
 
-const homeSelector = state => state.home;
+const homeSelector = (state) => state.home;
 
 export const SocketIoSelector = createSelector(
   homeSelector,
-  homeReducer => homeReducer.socketIo,
+  (homeReducer) => homeReducer.socketIo
+);
+
+export const loadingCreatePostSelector = createSelector(
+  homeSelector,
+  (homeReducer) => homeReducer.loadingCreatePost
 );

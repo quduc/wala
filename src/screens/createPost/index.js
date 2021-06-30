@@ -16,21 +16,19 @@ import { useNavigation } from "@react-navigation/native";
 import { useTranslation } from "react-i18next";
 import { useFormik } from "formik";
 import i18next from "i18next";
-import { useDispatch } from "react-redux";
-import { TARGET_MEMBER, RULE_OF_ROOM } from "@common/constant";
 import ImagePicker from "./components/ImagePicker";
+import { useDispatch, useSelector } from "react-redux";
+import { createPost } from "@modules/home/slice";
+import { loadingCreatePostSelector } from "@modules/home/selectors";
+import reactotron from "reactotron-react-native";
+import Toast from "react-native-toast-message";
 
 const validate = (values) => {
   const errors = {};
 
-  if (!values.roomName.trim()) {
-    errors.roomName = i18next.t("message:MSG_2", {
+  if (!values.title.trim()) {
+    errors.title = i18next.t("message:MSG_2", {
       field: i18next.t("common:roomName"),
-    });
-  }
-  if (!values.maxMember.trim().replace(/(\D)/g, "").replace(/^(0*)/, "")) {
-    errors.maxMember = i18next.t("message:MSG_2", {
-      field: i18next.t("common:maxMember"),
     });
   }
 
@@ -41,30 +39,38 @@ const CreatePostModal = () => {
   const navigation = useNavigation();
   const { t } = useTranslation(["room", "comom"]);
   const [uriImage, setUriImage] = useState("");
-  const [targetMember, setTargetMember] = useState(TARGET_MEMBER[0].value);
-  const [rule, setRule] = useState(RULE_OF_ROOM[0].value);
   const dispatch = useDispatch();
+  const loading = useSelector(loadingCreatePostSelector);
 
   const formik = useFormik({
-    initialValues: { roomName: "", aboutRoom: "", maxMember: "10" },
+    initialValues: { title: "" },
     validate,
   });
-
-  useEffect(() => () => onResetData(), []);
 
   const onGoBack = () => {
     navigation.goBack();
   };
 
-  const onCreateRoom = () => {
-    const { roomName, aboutRoom, maxMember } = formik.values;
-  };
-
-  const onResetData = () => {
-    formik.resetForm();
-    setTargetMember(TARGET_MEMBER[0].value);
-    setRule(RULE_OF_ROOM[0].value);
-    setUriImage("");
+  const onCreatePostRoom = () => {
+    dispatch(
+      createPost({
+        data: {
+          title: formik.values?.title,
+          image: uriImage.split("|AND|")[1],
+        },
+        onError: (e) => {
+          Toast.show({
+            type: "error",
+            props: {
+              message: e.errorMessage,
+            },
+          });
+        },
+        onSuccess: () => {
+          onGoBack();
+        },
+      })
+    );
   };
 
   const handleTrimWhenBlurInput = (inputName, e) => {
@@ -73,13 +79,10 @@ const CreatePostModal = () => {
   };
 
   const isDisableButton = () =>
-    Object.keys(formik.errors).length !== 0 ||
-    !formik.values.roomName ||
-    !rule ||
-    !targetMember;
+    Object.keys(formik.errors).length !== 0 || !formik.values.title;
 
   return (
-    <Body scroll bg="transparent">
+    <Body scroll bg="transparent" loading={loading}>
       <Touchable height={120} opacity={0} onPress={onGoBack} />
       <Block
         ph={16}
@@ -92,7 +95,7 @@ const CreatePostModal = () => {
             Cancel
           </Text>
           <Text bold h5 center flex={1}>
-            {t("room:txt_create_new_room")}
+            Create New Post
           </Text>
           <Touchable onPress={onGoBack}>
             <Text medium c1 color={colors.orange} left>
@@ -106,21 +109,21 @@ const CreatePostModal = () => {
           multiline
           numberOfLines={10}
           fontSize={12}
-          placeholder={t("placeholder_about_room")}
+          placeholder={"Share something about this post"}
           maxLength={100}
           iconRight={
             <Block flex={1} justifyEnd ml={5}>
               <Text mb={15} medium c2 color={colors.textGrayDark}>
-                {formik.values.aboutRoom.length}
+                {formik.values.title?.length}
                 /100
               </Text>
             </Block>
           }
-          value={formik.values.aboutRoom}
-          onChangeText={formik.handleChange("aboutRoom")}
-          onBlur={(e) => handleTrimWhenBlurInput("aboutRoom", e)}
-          error={formik.errors.aboutRoom && formik.touched.aboutRoom}
-          errorMessage={formik.errors.aboutRoom}
+          value={formik.values.title}
+          onChangeText={formik.handleChange("title")}
+          onBlur={(e) => handleTrimWhenBlurInput("title", e)}
+          error={formik.errors.title && formik.touched.title}
+          errorMessage={formik.errors.title}
         />
         <ImagePicker
           uriImage={uriImage.split("|AND|")[0]}
@@ -134,7 +137,7 @@ const CreatePostModal = () => {
           borderRadius={3}
           bg={colors.orange}
           disabled={isDisableButton()}
-          onPress={onCreateRoom}
+          onPress={onCreatePostRoom}
         >
           <Text medium c1 color={colors.white}>
             {t("txt_create")}
