@@ -12,7 +12,6 @@ import { FlatList } from "react-native";
 import { useEffect } from "react";
 import { fetchMessenger } from "@modules/chat/slice";
 import Toast from "react-native-toast-message";
-import reactotron from "reactotron-react-native";
 import * as screenTypes from "@navigation/screenTypes";
 import { useNavigation } from "@react-navigation/native";
 
@@ -22,7 +21,6 @@ const ChatScreen = () => {
   const messenger = useSelector(messengerSelector);
   const loadingMessenger = useSelector(loadingFetchMessageSelector);
   const { navigate } = useNavigation();
-  reactotron.log({ messenger });
 
   useEffect(() => {
     dispatch(

@@ -2,7 +2,7 @@ import "react-native-gesture-handler";
 import React from "react";
 import { Platform } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
-import CreateScreenModal from "@screens/room";
+import CreatePostModal from "@screens/createPost";
 import * as screenTypes from "../screenTypes";
 
 import MainTab from "./mainTab";
@@ -41,8 +41,8 @@ function MainStack() {
       />
 
       <Stack.Screen
-        name={screenTypes.CreateRoomScreen}
-        component={CreateScreenModal}
+        name={screenTypes.CreatePostScreen}
+        component={CreatePostModal}
         options={{
           animationEnabled: Platform.OS !== "android",
           cardStyle: {

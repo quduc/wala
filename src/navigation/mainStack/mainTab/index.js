@@ -145,7 +145,7 @@ function BottomTabs() {
         listeners={({ navigation }) => ({
           tabPress: (event) => {
             event.preventDefault();
-            navigation.navigate(screenTypes.CreateRoomScreen);
+            navigation.navigate(screenTypes.CreatePostScreen);
           },
         })}
       />

@@ -37,7 +37,7 @@ const validate = (values) => {
   return errors;
 };
 
-const CreateRoomModal = () => {
+const CreatePostModal = () => {
   const navigation = useNavigation();
   const { t } = useTranslation(["room", "comom"]);
   const [uriImage, setUriImage] = useState("");
@@ -145,4 +145,4 @@ const CreateRoomModal = () => {
   );
 };
 
-export default CreateRoomModal;
+export default CreatePostModal;

@@ -1,7 +1,7 @@
 import React from "react";
 import { Body } from "@components/index";
 import { useDispatch } from "react-redux";
-import ChatModule from "@screens/room/components/ChatModules";
+import ChatModule from "@screens/createPost/components/ChatModules";
 import { useRoute } from "@react-navigation/native";
 import { fetchMessageList } from "@modules/chat/slice";
 import { useEffect } from "react";
