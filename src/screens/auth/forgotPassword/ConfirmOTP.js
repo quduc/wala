@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   Body,
   Text,
@@ -7,26 +7,26 @@ import {
   Button,
   CodeInput,
   Block,
-} from '@components/index';
-import * as screenTypes from '@navigation/screenTypes';
-import { useDispatch, useSelector } from 'react-redux';
-import { confirmOtp, requestOtp } from '@modules/auth/slice';
+} from "@components/index";
+import * as screenTypes from "@navigation/screenTypes";
+import { useDispatch, useSelector } from "react-redux";
+import { confirmOtp, requestOtp } from "@modules/auth/slice";
 
 import {
   confirmOTPLoadingSelector,
   requestOTPLoadingSelector,
-} from '@modules/auth/selectors';
-import colors from '@assets/colors';
-import { useModal } from '@common/customHook';
-import { useTranslation } from 'react-i18next';
-import { convertDurationToTime } from '@utils/TrackPlayerHelper';
+} from "@modules/auth/selectors";
+import colors from "@assets/colors";
+import { useModal } from "@common/customHook";
+import { useTranslation } from "react-i18next";
+import { convertDurationToTime } from "@utils/TrackPlayerHelper";
 
 const ConfirmOTP = () => {
-  const { t } = useTranslation(['auth', 'common']);
+  const { t } = useTranslation(["auth", "common"]);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const route = useRoute();
-  const [otp, setOtp] = useState('');
+  const [otp, setOtp] = useState("");
   const [resendTime, setResendTime] = useState(120);
   const [resendTimeLoading, setResendTimeLoading] = useState(false);
   const [modal, contextHolder] = useModal();
@@ -62,13 +62,13 @@ const ConfirmOTP = () => {
             },
           });
         },
-        onError: e => {
+        onError: (e) => {
           modal.error({
-            title: t('common:title_error'),
+            title: t("common:title_error"),
             content: e.errorMessage,
           });
         },
-      }),
+      })
     );
   };
 
@@ -79,20 +79,20 @@ const ConfirmOTP = () => {
         data: {
           email,
         },
-        onError: e => {
+        onError: (e) => {
           modal.error({
-            title: t('common:title_error'),
+            title: t("common:title_error"),
             content: e.errorMessage,
           });
         },
-      }),
+      })
     );
   };
 
   const onCountDown = () => {
     setResendTime(120);
     countDownRef.current = setInterval(() => {
-      setResendTime(time => {
+      setResendTime((time) => {
         if (time > 0) {
           return time - 1;
         }
@@ -111,7 +111,7 @@ const ConfirmOTP = () => {
       onCountDown();
     } catch (e) {
       modal.error({
-        title: t('common:title_error'),
+        title: t("common:title_error"),
         content: e.errorMessage,
       });
     }
@@ -124,10 +124,11 @@ const ConfirmOTP = () => {
     <Body
       p={16}
       keyboardAvoid
-      loading={confirmOTPLoading || requestOTPLoading || resendTimeLoading}>
-      <Header isBack title={t('txt_header_forgot_password_screen')} />
+      loading={confirmOTPLoading || requestOTPLoading || resendTimeLoading}
+    >
+      <Header isBack title={t("txt_header_forgot_password_screen")} />
       <Text mt={50} mb={24}>
-        {t('txt_title_in_confirm_otp_screen')}
+        {t("txt_title_in_confirm_otp_screen")}
       </Text>
 
       <CodeInput value={otp} setValue={setOtp} />
@@ -145,9 +146,10 @@ const ConfirmOTP = () => {
           borderRadius={3}
           gradient
           onPress={reSendOTP}
-          disabled={resendTime > 0}>
+          disabled={resendTime > 0}
+        >
           <Text c1 medium>
-            {t('txt_resend_code')}
+            {t("txt_resend_code")}
           </Text>
         </Button>
       </Block>
@@ -158,9 +160,10 @@ const ConfirmOTP = () => {
         gradient
         borderRadius={3}
         disabled={isDisableButton()}
-        onPress={onConfirmOTP}>
+        onPress={onConfirmOTP}
+      >
         <Text c1 medium>
-          {t('txt_submit')}
+          {t("txt_submit")}
         </Text>
       </Button>
       {contextHolder}
