@@ -11,19 +11,10 @@ export default function TermOfUse() {
   return (
     <Body scroll ph={16}>
       <Header title="term" />
-      <Text medium c1>
+      <Text medium c1 mt={8}>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Auctor
         elementum enim feugiat nunc, mauris mauris neque blandit ante. Faucibus
       </Text>
-      <Touchable
-        disabled={!interstitialLoaded}
-        middle
-        bg={interstitialLoaded ? "orange" : "gray"}
-        p={8}
-        onPress={() => {}}
-      >
-        <Text color={colors.white}>SHOW QUANG CAO</Text>
-      </Touchable>
     </Body>
   );
 }

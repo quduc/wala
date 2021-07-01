@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { TextInputm, Switch } from 'react-native';
-import { Body, Text, Button, Block } from '@components/index';
-import { useTranslation } from 'react-i18next';
-import Header from '@components/header';
-import colors from '@assets/colors';
-import { fetchNotifiSetting, updateNotifiSetting } from '@modules/user/slice';
-import {
-  notiSettingLoadingSelector,
-  notiSettingSelector,
-} from '@modules/user/selectors';
-import { useDispatch, useSelector } from 'react-redux';
-import Toast from 'react-native-toast-message';
+import React, { useEffect, useState } from "react";
+import { Switch } from "react-native";
+import { Body, Text, Block } from "@components/index";
+import { useTranslation } from "react-i18next";
+import Header from "@components/header";
+import colors from "@assets/colors";
+import { fetchNotifiSetting, updateNotifiSetting } from "@modules/user/slice";
+import { useDispatch } from "react-redux";
+import Toast from "react-native-toast-message";
 
 const SwitchComponent = ({ value, setValue }) => (
   <Switch
@@ -30,13 +26,12 @@ export default function Notification() {
   const [isLoadSucess, setIsLoadSucess] = useState(false);
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  // const notiSetting = useSelector(notiSettingSelector);
 
   useEffect(() => {
     dispatch(
       fetchNotifiSetting({
         data: {},
-        onSuccess: res => {
+        onSuccess: (res) => {
           setEnableFriendReq(res.data.showFriendRequest);
           setEnableAcceptFriend(res.data.showAcceptedRequest);
           setEnableFollowActivity(res.data.showFollowActivities);
@@ -44,15 +39,15 @@ export default function Notification() {
           setEnableJoinRoom(res.data.showInvitation);
           setIsLoadSucess(true);
         },
-        onError: e => {
+        onError: (e) => {
           Toast.show({
-            type: 'error',
+            type: "error",
             props: {
               message: e.errorMessage,
             },
           });
         },
-      }),
+      })
     );
   }, []);
 
@@ -91,47 +86,32 @@ export default function Notification() {
         showFriendActivities: enableFriendActivity,
         showFollowActivities: enableFollowActivity,
         showInvitation: enableJoinRoom,
-      }),
+      })
     );
   };
 
   return (
     <Body scroll ph={16}>
-      <Header title='notification' />
-      <Block row borderBottom pb={8}>
-        <Text flex={1}>{t('friendRequests')}</Text>
+      <Header title="notification" />
+      <Block row borderBottom pb={8} mt={16}>
+        <Text flex={1}>{t("friendRequests")}</Text>
         <SwitchComponent
           value={enableFriendReq}
           setValue={onSetEnableFriendReq}
         />
       </Block>
       <Block row borderBottom pb={8} mt={16}>
-        <Text flex={1}>{t('acceptedFriendRequest')}</Text>
+        <Text flex={1}>{t("acceptedFriendRequest")}</Text>
         <SwitchComponent
           value={enableAcceptFriend}
           setValue={onSetEnableAcceptFriend}
         />
       </Block>
       <Block row borderBottom pb={8} mt={16}>
-        <Text flex={1}>{t('followActivities')}</Text>
+        <Text flex={1}>{t("followActivities")}</Text>
         <SwitchComponent
           value={enableFollowActivity}
           setValue={onSetEnableFollowActivity}
-        />
-      </Block>
-
-      <Block row borderBottom pb={8} mt={16}>
-        <Text flex={1}>{t('followingCreateRoom')}</Text>
-        <SwitchComponent
-          value={enableFriendActivity}
-          setValue={onSetEnableFriendActivity}
-        />
-      </Block>
-      <Block row borderBottom pb={8} mt={16}>
-        <Text flex={1}>{t('joinRoomInvitation')}</Text>
-        <SwitchComponent
-          value={enableJoinRoom}
-          setValue={onSetEnableJoinRoom}
         />
       </Block>
     </Body>
