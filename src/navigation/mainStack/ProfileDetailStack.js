@@ -1,21 +1,20 @@
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import EditProfile from '@screens/user/EditProfile';
-import FriendRequests from '@screens/user/FriendRequests';
-import ChangePassword from '@screens/user/ChangePassword';
-import ForgotPassword from '@screens/user/ForgotPassword';
-import CreateNewPassword from '@screens/user/CreateNewPassword';
-import Setting from '@screens/user/Setting';
-import AboutUs from '@screens/user/AboutUs';
-import ContactUs from '@screens/user/ContactUs';
-import Notification from '@screens/user/Notification';
-import PrivacyPolicy from '@screens/user/PrivacyPolicy';
-import TermOfUse from '@screens/user/TermOfUse';
-import ProfileOther from '@screens/profileOther/index';
-import ListFriend from '@screens/listFriend';
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import EditProfile from "@screens/user/EditProfile";
+import FriendRequests from "@screens/user/FriendRequests";
+import ChangePassword from "@screens/user/ChangePassword";
+import ForgotPassword from "@screens/user/ForgotPassword";
+import CreateNewPassword from "@screens/user/CreateNewPassword";
+import AboutUs from "@screens/user/AboutUs";
+import ContactUs from "@screens/user/ContactUs";
+import Notification from "@screens/user/Notification";
+import PrivacyPolicy from "@screens/user/PrivacyPolicy";
+import TermOfUse from "@screens/user/TermOfUse";
+import ProfileOther from "@screens/profileOther/index";
+import ListFriend from "@screens/listFriend";
 
-import * as screenTypes from '@navigation/screenTypes';
-import ListFriendOther from '@screens/listFriendOther';
+import * as screenTypes from "@navigation/screenTypes";
+import ListFriendOther from "@screens/listFriendOther";
 
 const Stack = createStackNavigator();
 
@@ -23,7 +22,8 @@ export default () => (
   <Stack.Navigator
     screenOptions={{
       headerShown: false,
-    }}>
+    }}
+  >
     <Stack.Screen name={screenTypes.EditProfile} component={EditProfile} />
     <Stack.Screen name={screenTypes.ListFriend} component={ListFriend} />
     <Stack.Screen
@@ -42,7 +42,6 @@ export default () => (
       name={screenTypes.CreateNewPassword}
       component={CreateNewPassword}
     />
-    <Stack.Screen name={screenTypes.Setting} component={Setting} />
     <Stack.Screen name={screenTypes.AboutUs} component={AboutUs} />
     <Stack.Screen name={screenTypes.ContactUs} component={ContactUs} />
     <Stack.Screen name={screenTypes.Notification} component={Notification} />
