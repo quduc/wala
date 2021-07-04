@@ -26,6 +26,7 @@ import { useCallback } from "react";
 import { FlatList } from "react-native";
 import { disconnectSocket } from "@utils/SocketHelper";
 import { signOut } from "@modules/auth/slice";
+import LogoutModal from "./components/LogoutModal";
 
 const Account = () => {
   const { t } = useTranslation();

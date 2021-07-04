@@ -52,11 +52,20 @@ const CreatePostModal = () => {
   };
 
   const onCreatePostRoom = () => {
+    const parts = uriImage.uri.split("/");
+
+    const image = {
+      uri: uriImage.uri,
+      type: uriImage.type,
+      name: parts[parts.length - 1],
+      size: uriImage.fileSize,
+    };
+
     dispatch(
       createPost({
         data: {
+          image: image,
           title: formik.values?.title,
-          image: uriImage.split("|AND|")[1],
         },
         onError: (e) => {
           Toast.show({
@@ -125,10 +134,7 @@ const CreatePostModal = () => {
           error={formik.errors.title && formik.touched.title}
           errorMessage={formik.errors.title}
         />
-        <ImagePicker
-          uriImage={uriImage.split("|AND|")[0]}
-          setUriImage={setUriImage}
-        />
+        <ImagePicker uriImage={uriImage} setUriImage={setUriImage} />
         <Button
           height={40}
           gradient

@@ -13,6 +13,7 @@ import {
   STATUS_HTTPS,
   DEFAULT_MODE,
 } from "../config";
+import reactotron from "reactotron-react-native";
 
 let HEADERS = {
   Accept: "application/json",
@@ -148,7 +149,6 @@ const baseApi = {
     console.log("******POST_FORM_DATA", `${baseURL}${endpoint}`, params);
     apiGlobal.setBaseURL(baseURL);
     apiGlobal.setHeaders(HEADERS_MULTIPLE_PART);
-
     const formData = new FormData();
     _.forIn(params, (value, key) => {
       if (value) {
