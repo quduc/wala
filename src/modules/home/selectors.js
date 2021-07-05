@@ -11,3 +11,13 @@ export const loadingCreatePostSelector = createSelector(
   homeSelector,
   (homeReducer) => homeReducer.loadingCreatePost
 );
+
+export const loadingFetchPostSelector = createSelector(
+  homeSelector,
+  (homeReducer) => homeReducer.loadingPost
+);
+
+export const postSelector = createSelector(
+  homeSelector,
+  (homeReducer) => homeReducer.post
+);

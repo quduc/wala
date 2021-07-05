@@ -1,32 +1,42 @@
 /* eslint-disable indent */
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Keyboard } from "react-native";
-import { Text, Body, Touchable, Search, Block } from "@components/index";
+import {
+  Text,
+  Body,
+  Touchable,
+  Search,
+  Block,
+  Image,
+  Icon,
+} from "@components/index";
 import { useTranslation } from "react-i18next";
-import { LIST_TAB } from "@common/constant/index";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchProfile, fetchUserSucceeded } from "@modules/user/slice";
+import { fetchProfile } from "@modules/user/slice";
 import { fetchTotalUnReadNotification } from "@modules/notification/slice";
-import { useRoute, useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 import { useDebounce } from "@common/customHook";
-import TabUser from "./tabUser";
-import TabHost from "./tabHost";
-import SearchData from "./components/SearchData";
-
-const mapTabNameToview = {
-  users: <TabUser />,
-  host: <TabHost />,
-};
+import { FlatList } from "react-native";
+import {
+  loadingFetchPostSelector,
+  postSelector,
+} from "@modules/home/selectors";
+import keyExtractor from "@utils/keyExtractor";
+import { fetchPost } from "@modules/home/slice";
+import Toast from "react-native-toast-message";
+import { profileSelector } from "@modules/user/selectors";
+import images from "@assets/images";
+import colors from "@assets/colors";
+import SvgComponent from "@assets/svg";
 
 export default function Home() {
   const [valueSearch, setValueSearch] = useState("");
   const { t } = useTranslation("home");
   const dispatch = useDispatch();
-  const [tabName, setTabName] = useState(LIST_TAB[0].title);
-  const route = useRoute();
   const debouncedSearchTerm = useDebounce(valueSearch, 1000);
-  const childRef = useRef();
-
+  const post = useSelector(postSelector);
+  const profile = useSelector(profileSelector);
+  const loading = useSelector(loadingFetchPostSelector);
   useFocusEffect(
     useCallback(
       () => () => {
@@ -37,23 +47,26 @@ export default function Home() {
   );
 
   useEffect(() => {
-    !!valueSearch && childRef.current.onSearch();
-  }, [debouncedSearchTerm]);
-
-  useEffect(() => {
     onFetchData();
-    if (route?.params?.tabName) {
-      setTabName(route?.params?.tabName);
-    }
-  }, [route.params?.tabName]);
+  }, []);
 
   const onFetchData = () => {
     dispatch(fetchProfile());
     dispatch(fetchTotalUnReadNotification());
-  };
-
-  const onChangeTab = (value) => {
-    setTabName(value);
+    dispatch(
+      fetchPost({
+        data: {
+          onError: (e) => {
+            Toast.show({
+              type: "error",
+              props: {
+                message: e.errorMessage,
+              },
+            });
+          },
+        },
+      })
+    );
   };
 
   const _onChangeText = (value) => {
@@ -65,38 +78,63 @@ export default function Home() {
     Keyboard.dismiss();
   };
 
-  useEffect(() => {
-    if (!valueSearch) {
-      if (tabName === "users") {
-        dispatch(fetchUserSucceeded({ data: [] }));
-      }
-    }
-  }, [valueSearch]);
-
+  const renderItem = useCallback(({ item }) => {
+    return (
+      <Block mt={32}>
+        <Block row justifyBetween middle mr={16}>
+          <Block row>
+            <Image
+              uri={item?.avatar}
+              defaultImage={images.default_avatar}
+              circle={44}
+            />
+            <Text size={18} color={colors.white} pl={8}>
+              {item?.name}
+            </Text>
+          </Block>
+          <Icon
+            touchable
+            onPress={() => {}}
+            xml={
+              item?.isLiked ? SvgComponent.iconLoveRedBig : SvgComponent.love
+            }
+          />
+        </Block>
+        <Text size={14} mv={8}>
+          {item.title}
+        </Text>
+        {item?.image ? <Image uri={item?.image} height={300} /> : null}
+        <Block height={1} bg={"gray"} mt={32} />
+      </Block>
+    );
+  });
   return (
-    <Body pl={16} loading={false}>
+    <Body loading={loading} ph={16}>
+      <Text size={24} bold pt={32}>
+        {`Hi ${profile?.name},`}
+      </Text>
       <Block row middle mt={10}>
         <Block flex={1}>
           <Search
             placeholder={t("placeholder_search")}
-            mr={16}
             height={40}
+            post
             onChangeText={_onChangeText}
             value={valueSearch}
           />
         </Block>
-
-        {!!valueSearch && (
-          <Touchable medium c1 mr={16} onPress={onCancel}>
-            <Text>{t("cancel")}</Text>
-          </Touchable>
-        )}
       </Block>
-      <SearchData
-        tabName={tabName}
-        valueSearch={valueSearch?.trim()}
-        onCancel={onCancel}
-        ref={childRef}
+      <FlatList
+        data={post?.items}
+        renderItem={renderItem}
+        style={{ marginTop: 32 }}
+        keyExtractor={keyExtractor}
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          <Text center middle mt={60} size={18}>
+            {t("common:noData")}
+          </Text>
+        }
       />
     </Body>
   );

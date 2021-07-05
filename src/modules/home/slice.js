@@ -1,11 +1,14 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from "@reduxjs/toolkit";
-import reactotron from "reactotron-react-native";
 
 const initialState = {
   socketIo: "",
-
   loadingCreatePost: false,
+  post: {
+    items: [],
+    total: 0,
+  },
+  loadingPost: false,
 };
 
 const homeSlice = createSlice({
@@ -24,6 +27,17 @@ const homeSlice = createSlice({
     createPostFailed: (state) => {
       state.loadingCreatePost = false;
     },
+    fetchPost: (state) => {
+      state.loadingPost = true;
+    },
+    fetchPostSucceeded: (state, action) => {
+      state.loadingPost = false;
+      state.post.items = action.payload.items;
+      state.post.total = action.payload.total;
+    },
+    fetchPostFailed: (state) => {
+      state.loadingPost = false;
+    },
   },
 });
 
@@ -34,6 +48,9 @@ export const {
   createPost,
   createPostSucceeded,
   createPostFailed,
+  fetchPost,
+  fetchPostSucceeded,
+  fetchPostFailed,
 } = actions;
 
 export default reducer;

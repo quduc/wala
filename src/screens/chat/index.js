@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { Block, Body, Image, Search, Text, Touchable } from "@components/index";
+import {
+  Block,
+  Body,
+  Header,
+  Image,
+  Search,
+  Text,
+  Touchable,
+} from "@components/index";
 import { useDispatch, useSelector } from "react-redux";
 import {
   loadingFetchMessageSelector,
@@ -24,9 +32,10 @@ const ChatScreen = () => {
   const loadingMessenger = useSelector(loadingFetchMessageSelector);
   const { navigate } = useNavigation();
   const [valueSearch, setValueSearch] = useState("");
+
   useEffect(() => {
     getMesenger();
-  }, []);
+  }, [getMesenger]);
 
   const getMesenger = () => {
     dispatch(
@@ -76,7 +85,8 @@ const ChatScreen = () => {
   );
 
   return (
-    <Body pt={45} loading={false}>
+    <Body loading={false}>
+      <Header isBack={false} title={"Messenger"} />
       <Search
         mh={16}
         placeholder={t("Search")}

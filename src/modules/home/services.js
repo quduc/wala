@@ -6,3 +6,7 @@ export function createPostApi({ title, image }) {
     image,
   });
 }
+
+export function fetchPostApi() {
+  return baseApi.get("/post");
+}
