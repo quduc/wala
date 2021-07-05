@@ -1,5 +1,8 @@
 import { put, call, takeEvery, select } from "redux-saga/effects";
 import {
+  addLike,
+  addLikeFailed,
+  addLikeSucceeded,
   createPost,
   createPostFailed,
   createPostSucceeded,
@@ -8,7 +11,7 @@ import {
   fetchPostSucceeded,
 } from "./slice";
 
-import { createPostApi, fetchPostApi } from "./services";
+import { addLikeApi, createPostApi, fetchPostApi } from "./services";
 
 function* createPostSideEffect({ payload }) {
   try {
@@ -32,7 +35,19 @@ function* fetchPostSideEffect({ payload }) {
   }
 }
 
+function* addLikeSideEffect({ payload }) {
+  try {
+    const response = yield call(addLikeApi , payload.data);
+    yield put(addLikeSucceeded(response));
+    if (payload.onSuccess) yield call(payload.onSuccess, response);
+  } catch (error) {
+    yield put(addLikeFailed(error));
+    if (payload.onError) yield call(payload.onError, error);
+  }
+}
+
 export default function* homeSaga() {
   yield takeEvery(createPost.type, createPostSideEffect);
   yield takeEvery(fetchPost.type, fetchPostSideEffect);
+  yield takeEvery(addLike.type, addLikeSideEffect);
 }

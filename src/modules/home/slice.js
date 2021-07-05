@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from "@reduxjs/toolkit";
+import reactotron from "reactotron-react-native";
 
 const initialState = {
   socketIo: "",
@@ -38,6 +39,16 @@ const homeSlice = createSlice({
     fetchPostFailed: (state) => {
       state.loadingPost = false;
     },
+    addLike: (state) => {},
+    addLikeSucceeded: (state, action) => {
+      const index = state.post.items.findIndex(
+        (item) => item.id === action.payload?.data?.postId
+      );
+      if (index !== -1) {
+        state.post.items[index].isLiked = !state.post.items[index].isLiked;
+      }
+    },
+    addLikeFailed: () => {},
   },
 });
 
@@ -51,6 +62,9 @@ export const {
   fetchPost,
   fetchPostSucceeded,
   fetchPostFailed,
+  addLike,
+  addLikeSucceeded,
+  addLikeFailed,
 } = actions;
 
 export default reducer;

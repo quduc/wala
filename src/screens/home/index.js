@@ -22,7 +22,7 @@ import {
   postSelector,
 } from "@modules/home/selectors";
 import keyExtractor from "@utils/keyExtractor";
-import { fetchPost } from "@modules/home/slice";
+import { addLike, fetchPost } from "@modules/home/slice";
 import Toast from "react-native-toast-message";
 import { profileSelector } from "@modules/user/selectors";
 import images from "@assets/images";
@@ -69,6 +69,24 @@ export default function Home() {
     );
   };
 
+  const onAddLike = (postId) => {
+    dispatch(
+      addLike({
+        data: {
+          postId,
+          onError: (e) => {
+            Toast.show({
+              type: "error",
+              props: {
+                message: e.errorMessage,
+              },
+            });
+          },
+        },
+      })
+    );
+  };
+
   const _onChangeText = (value) => {
     setValueSearch(value);
   };
@@ -94,7 +112,9 @@ export default function Home() {
           </Block>
           <Icon
             touchable
-            onPress={() => {}}
+            onPress={() => {
+              onAddLike(item.id);
+            }}
             xml={
               item?.isLiked ? SvgComponent.iconLoveRedBig : SvgComponent.love
             }
