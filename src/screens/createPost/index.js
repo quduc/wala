@@ -52,19 +52,21 @@ const CreatePostModal = () => {
   };
 
   const onCreatePostRoom = () => {
-    const parts = uriImage.uri.split("/");
-
-    const image = {
-      uri: uriImage.uri,
-      type: uriImage.type,
-      name: parts[parts.length - 1],
-      size: uriImage.fileSize,
-    };
-
+    let parts;
+    let image;
+    if (uriImage) {
+      parts = uriImage.uri.split("/");
+      image = {
+        uri: uriImage.uri,
+        type: uriImage.type,
+        name: parts[parts.length - 1],
+        size: uriImage.fileSize,
+      };
+    }
     dispatch(
       createPost({
         data: {
-          image: image,
+          image: image || "",
           title: formik.values?.title,
         },
         onError: (e) => {

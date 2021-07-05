@@ -9,9 +9,14 @@ import {
   fetchPost,
   fetchPostFailed,
   fetchPostSucceeded,
+  loadMorePost,
+  loadMorePostFailed,
+  loadMorePostSucceeded,
 } from "./slice";
 
 import { addLikeApi, createPostApi, fetchPostApi } from "./services";
+import { loadMorePostOffset } from "./selectors";
+import reactotron from "reactotron-react-native";
 
 function* createPostSideEffect({ payload }) {
   try {
@@ -37,7 +42,7 @@ function* fetchPostSideEffect({ payload }) {
 
 function* addLikeSideEffect({ payload }) {
   try {
-    const response = yield call(addLikeApi , payload.data);
+    const response = yield call(addLikeApi, payload.data);
     yield put(addLikeSucceeded(response));
     if (payload.onSuccess) yield call(payload.onSuccess, response);
   } catch (error) {
@@ -46,8 +51,25 @@ function* addLikeSideEffect({ payload }) {
   }
 }
 
+function* loadMorePostSideEffect({ payload }) {
+  try {
+    const offset = yield select(loadMorePostOffset);
+    const data = {
+      offset: offset + 10,
+      ...payload.data,
+    };
+    const response = yield call(fetchPostApi, data);
+    yield put(loadMorePostSucceeded(response));
+    if (payload.onSuccess) yield call(payload.onSuccess, response);
+  } catch (error) {
+    yield put(loadMorePostFailed(error));
+    if (payload.onError) yield call(payload.onError, error);
+  }
+}
+
 export default function* homeSaga() {
   yield takeEvery(createPost.type, createPostSideEffect);
   yield takeEvery(fetchPost.type, fetchPostSideEffect);
   yield takeEvery(addLike.type, addLikeSideEffect);
+  yield takeEvery(loadMorePost.type, loadMorePostSideEffect);
 }

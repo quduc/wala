@@ -9,6 +9,7 @@ import {
   Block,
   Image,
   Icon,
+  Loading,
 } from "@components/index";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,10 +20,11 @@ import { useDebounce } from "@common/customHook";
 import { FlatList } from "react-native";
 import {
   loadingFetchPostSelector,
+  loadingLoadMoreSelector,
   postSelector,
 } from "@modules/home/selectors";
 import keyExtractor from "@utils/keyExtractor";
-import { addLike, fetchPost } from "@modules/home/slice";
+import { addLike, fetchPost, loadMorePost } from "@modules/home/slice";
 import Toast from "react-native-toast-message";
 import { profileSelector } from "@modules/user/selectors";
 import images from "@assets/images";
@@ -37,6 +39,7 @@ export default function Home() {
   const post = useSelector(postSelector);
   const profile = useSelector(profileSelector);
   const loading = useSelector(loadingFetchPostSelector);
+  const loadingLoadMore = useSelector(loadingLoadMoreSelector);
   useFocusEffect(
     useCallback(
       () => () => {
@@ -124,10 +127,37 @@ export default function Home() {
           {item.title}
         </Text>
         {item?.image ? <Image uri={item?.image} height={300} /> : null}
-        <Block height={1} bg={"gray"} mt={32} />
+        <Block height={1} bg={"gray"} mt={item?.image ? 32 : 16} />
       </Block>
     );
   });
+
+  const onLoadMore = () => {
+    if (loadingLoadMore) return;
+    if (post?.items?.length === post?.total) return;
+    dispatch(
+      loadMorePost({
+        data: {
+          onError: (error) => {
+            Toast.show({
+              type: "error",
+              props: {
+                message: error.errorMessage,
+              },
+            });
+          },
+        },
+      })
+    );
+  };
+
+  const renderLoadMore = () =>
+    loadingLoadMore ? (
+      <Block center mv={10}>
+        <Loading color={colors.white} />
+      </Block>
+    ) : null;
+
   return (
     <Body loading={loading} ph={16}>
       <Text size={24} bold pt={32}>
@@ -155,6 +185,9 @@ export default function Home() {
             {t("common:noData")}
           </Text>
         }
+        onEndReachedThreshold={0.3}
+        onEndReached={onLoadMore}
+        ListFooterComponent={renderLoadMore}
       />
     </Body>
   );

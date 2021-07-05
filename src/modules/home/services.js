@@ -1,5 +1,7 @@
 import { baseApi } from "@common/baseApi";
 
+const LIMIT_POST = 10;
+
 export function createPostApi({ title, image }) {
   return baseApi.postFormData("/post", {
     title,
@@ -7,8 +9,11 @@ export function createPostApi({ title, image }) {
   });
 }
 
-export function fetchPostApi() {
-  return baseApi.get("/post");
+export function fetchPostApi(data) {
+  return baseApi.get("/post", {
+    offset: data?.offset || 0,
+    limit: LIMIT_POST,
+  });
 }
 
 export function addLikeApi({ postId }) {

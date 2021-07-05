@@ -10,6 +10,8 @@ const initialState = {
     total: 0,
   },
   loadingPost: false,
+  loadingLoadMore: false,
+  loadMoreOffset: 0,
 };
 
 const homeSlice = createSlice({
@@ -29,6 +31,7 @@ const homeSlice = createSlice({
       state.loadingCreatePost = false;
     },
     fetchPost: (state) => {
+      state.loadMoreOffset = 0;
       state.loadingPost = true;
     },
     fetchPostSucceeded: (state, action) => {
@@ -49,6 +52,20 @@ const homeSlice = createSlice({
       }
     },
     addLikeFailed: () => {},
+    loadMorePost: (state) => {
+      state.loadingLoadMore = true;
+    },
+    loadMorePostSucceeded: (state, action) => {
+      state.loadingLoadMore = false;
+      state.post.items = [...action.payload?.items, ...state.post.items];
+      state.loadMoreOffset =
+        action.payload?.items?.length > 0
+          ? state.loadMoreOffset + 10
+          : state.loadMoreOffset;
+    },
+    loadMorePostFailed: (state) => {
+      state.loadingLoadMore = false;
+    },
   },
 });
 
@@ -65,6 +82,9 @@ export const {
   addLike,
   addLikeSucceeded,
   addLikeFailed,
+  loadMorePost,
+  loadMorePostSucceeded,
+  loadMorePostFailed,
 } = actions;
 
 export default reducer;

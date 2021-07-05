@@ -21,3 +21,13 @@ export const postSelector = createSelector(
   homeSelector,
   (homeReducer) => homeReducer.post
 );
+
+export const loadingLoadMoreSelector = createSelector(
+  homeSelector,
+  (homeReducer) => homeReducer.loadingLoadMore
+);
+
+export const loadMorePostOffset = createSelector(
+  homeSelector,
+  (homeReducer) => homeReducer.loadMoreOffset
+);
