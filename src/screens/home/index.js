@@ -15,7 +15,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProfile } from "@modules/user/slice";
 import { fetchTotalUnReadNotification } from "@modules/notification/slice";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useDebounce } from "@common/customHook";
 import { FlatList } from "react-native";
 import {
@@ -30,6 +30,7 @@ import { profileSelector } from "@modules/user/selectors";
 import images from "@assets/images";
 import colors from "@assets/colors";
 import SvgComponent from "@assets/svg";
+import * as screenTypes from "@navigation/screenTypes";
 
 export default function Home() {
   const [valueSearch, setValueSearch] = useState("");
@@ -40,6 +41,7 @@ export default function Home() {
   const profile = useSelector(profileSelector);
   const loading = useSelector(loadingFetchPostSelector);
   const loadingLoadMore = useSelector(loadingLoadMoreSelector);
+  const { navigate } = useNavigation();
   useFocusEffect(
     useCallback(
       () => () => {
@@ -101,7 +103,15 @@ export default function Home() {
 
   const renderItem = useCallback(({ item }) => {
     return (
-      <Block mt={32}>
+      <Touchable
+        mt={32}
+        onPress={() => {
+          navigate(screenTypes.HomeDetailStack, {
+            screen: screenTypes.PostDetail,
+            params: { item },
+          });
+        }}
+      >
         <Block row justifyBetween middle mr={16}>
           <Block row>
             <Image
@@ -128,7 +138,7 @@ export default function Home() {
         </Text>
         {item?.image ? <Image uri={item?.image} height={300} /> : null}
         <Block height={1} bg={"gray"} mt={item?.image ? 32 : 16} />
-      </Block>
+      </Touchable>
     );
   });
 
