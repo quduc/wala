@@ -14,19 +14,16 @@ import {
 import { SocketIoSelector } from "@modules/home/selectors";
 import { sendMessageLoadingSelector } from "@modules/chat/selectors";
 import ListMessage from "./ListMessage";
-import reactotron from "reactotron-react-native";
 
 const ChatModule = ({ userId }) => {
   const { t } = useTranslation(["auth", "common"]);
   const [messages, setMessage] = useState("");
-  const [modal, contextHolder] = useModal();
   const sendMessageLoading = useSelector(sendMessageLoadingSelector);
   const socketIo = useSelector(SocketIoSelector);
   const dispatch = useDispatch("");
 
   useEffect(() => {
     subscribeGetMessageSocket(socketIo, (res) => {
-      reactotron.log({ res });
       if (res?.data) {
         dispatch(
           pushMessageToList({
@@ -50,15 +47,13 @@ const ChatModule = ({ userId }) => {
 
   return (
     <Block flex={1}>
-      <Text c1 medium center mv={5}>
-        Today, 4:20pm
-      </Text>
       <Block flex={1}>
         <ListMessage />
       </Block>
       <TextInput
         mt={16}
         mh={16}
+        mb={16}
         placeholder="Aa"
         maxLength={300}
         height={40}
@@ -74,7 +69,6 @@ const ChatModule = ({ userId }) => {
           />
         }
       />
-      {contextHolder}
     </Block>
   );
 };

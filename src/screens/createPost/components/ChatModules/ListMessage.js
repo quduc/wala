@@ -19,33 +19,64 @@ const ListMessage = ({ roomId }) => {
   const profile = useSelector(profileSelector);
   const dispatch = useDispatch();
 
-  const _renderListMessageItem = ({ item }) => (
-    <Block row mv={8}>
-      <Image
-        source={item?.sender?.avatar}
-        defaultImage={images.default_avatar}
-        circle={22}
-        mt={2}
-      />
-      <Block ml={12}>
-        <Text
-          extraBold
-          c1
-          color={
-            item?.sender?.name === profile.name
-              ? colors.orange
-              : colors.textPrimary
-          }
-        >
-          {item?.sender?.name || ""}{" "}
-          <Text medium c1>
-            {" "}
-            {item?.content}
+  const _renderListMessageItem = ({ item }) => {
+    if (item?.sender?.name === profile.name) {
+      return (
+        <Block row mv={8} justifyEnd>
+          <Block mr={12}>
+            <Text
+              extraBold
+              c1
+              color={
+                item?.sender?.name === profile.name
+                  ? colors.orange
+                  : colors.textPrimary
+              }
+            >
+              <Text medium c1>
+                {item?.content}
+                {"  "}
+              </Text>
+              {item?.sender?.name || ""}
+            </Text>
+          </Block>
+          <Image
+            source={item?.sender?.avatar}
+            defaultImage={images.default_avatar}
+            circle={22}
+            mt={2}
+          />
+        </Block>
+      );
+    }
+    return (
+      <Block row mv={8}>
+        <Image
+          source={item?.sender?.avatar}
+          defaultImage={images.default_avatar}
+          circle={22}
+          mt={2}
+        />
+        <Block ml={12}>
+          <Text
+            extraBold
+            c1
+            color={
+              item?.sender?.name === profile.name
+                ? colors.orange
+                : colors.textPrimary
+            }
+          >
+            {item?.sender?.name || ""}{" "}
+            <Text medium c1>
+              {" "}
+              {item?.content}
+            </Text>
           </Text>
-        </Text>
+        </Block>
       </Block>
-    </Block>
-  );
+    );
+  };
 
   return (
     <Block ph={16}>

@@ -8,8 +8,6 @@ import SvgComponent from "@assets/svg";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { launchImageLibrary } from "react-native-image-picker";
-import { preUploadFile } from "@modules/uploadFile/slice";
-import RNFetchBlob from "rn-fetch-blob";
 import { useModal } from "@common/customHook";
 import { moderateScale, verticalScale } from "@common/scale";
 import Toast from "react-native-toast-message";
@@ -17,7 +15,6 @@ import Toast from "react-native-toast-message";
 const options = {
   quality: 1.0,
   mediaType: "photo",
-  // includeBase64: true,
 };
 
 const ImagePicker = ({ uriImage, setUriImage, ignore }) => {
