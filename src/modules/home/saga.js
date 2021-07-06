@@ -52,7 +52,7 @@ function* addLikeSideEffect({ payload }) {
   try {
     const response = yield call(addLikeApi, payload.data);
     yield put(addLikeSucceeded(response));
-    if (payload.onSuccess) yield call(payload.onSuccess, response);
+    if (payload.onSuccess) yield call(payload.onSuccess);
   } catch (error) {
     yield put(addLikeFailed(error));
     if (payload.onError) yield call(payload.onError, error);
@@ -76,7 +76,6 @@ function* loadMorePostSideEffect({ payload }) {
 }
 
 function* addCommentSideEffect({ payload }) {
-  reactotron.log({ payload });
   try {
     const response = yield call(addCommentApi, payload.data);
     yield put(addCommentSucceeded(response));

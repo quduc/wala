@@ -14,7 +14,6 @@ import Toast from "react-native-toast-message";
 import { useDispatch } from "react-redux";
 import _ from "lodash";
 import images from "@assets/images";
-import reactotron from "reactotron-react-native";
 import { useModal } from "@common/customHook";
 import { useTranslation } from "react-i18next";
 
@@ -29,7 +28,8 @@ export default PostDetail = () => {
   const [modal, contextHolder] = useModal();
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
-
+  const [isLiked, setIsLiked] = useState(false);
+  const [totalLike, setTotalLike] = useState(false);
   useEffect(() => {
     getData();
   }, []);
@@ -43,6 +43,8 @@ export default PostDetail = () => {
       const res = await getPostDetailApi(data);
       setListLike(res.data?.membersLike || []);
       setListComment(res.data?.memberComment || []);
+      setIsLiked(res.data?.isLiked);
+      setTotalLike(res?.data?.totalLike);
     } catch (error) {
       Toast.show({
         type: "error",
@@ -59,14 +61,22 @@ export default PostDetail = () => {
       addLike({
         data: {
           postId,
-          onError: (e) => {
-            Toast.show({
-              type: "error",
-              props: {
-                message: e.errorMessage,
-              },
-            });
-          },
+        },
+        onSuccess: () => {
+          setIsLiked(!isLiked);
+          if (isLiked) {
+            setTotalLike((prev) => prev - 1);
+          } else {
+            setTotalLike((prev) => prev + 1);
+          }
+        },
+        onError: (e) => {
+          Toast.show({
+            type: "error",
+            props: {
+              message: e.errorMessage,
+            },
+          });
         },
       })
     );
@@ -144,12 +154,10 @@ export default PostDetail = () => {
               onPress={() => {
                 onAddLike(item.id);
               }}
-              xml={
-                item?.isLiked ? SvgComponent.iconLoveRedBig : SvgComponent.love
-              }
+              xml={isLiked ? SvgComponent.iconLoveRedBig : SvgComponent.love}
             />
             <Text size={16} ml={8} medium>
-              {listLike?.length}
+              {totalLike}
             </Text>
           </Block>
           <Text size={16} medium>

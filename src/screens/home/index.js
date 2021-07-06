@@ -60,15 +60,13 @@ export default function Home() {
     dispatch(fetchTotalUnReadNotification());
     dispatch(
       fetchPost({
-        data: {
-          onError: (e) => {
-            Toast.show({
-              type: "error",
-              props: {
-                message: e.errorMessage,
-              },
-            });
-          },
+        onError: (e) => {
+          Toast.show({
+            type: "error",
+            props: {
+              message: e.errorMessage,
+            },
+          });
         },
       })
     );

@@ -40,15 +40,13 @@ const ChatScreen = () => {
   const getMesenger = () => {
     dispatch(
       fetchMessenger({
-        data: {
-          onError: (e) => {
-            Toast.show({
-              type: "error",
-              props: {
-                message: e.errorMessage,
-              },
-            });
-          },
+        onError: (e) => {
+          Toast.show({
+            type: "error",
+            props: {
+              message: e.errorMessage,
+            },
+          });
         },
       })
     );

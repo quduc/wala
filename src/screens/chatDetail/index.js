@@ -6,6 +6,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { fetchMessageList } from "@modules/chat/slice";
 import { useEffect } from "react";
 import SvgComponent from "@assets/svg";
+import Toast from "react-native-toast-message";
 
 const ChatDetail = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,14 @@ const ChatDetail = () => {
       fetchMessageList({
         data: {
           receiverId: userId,
+        },
+        onError: (e) => {
+          Toast.show({
+            type: "error",
+            props: {
+              message: e.errorMessage,
+            },
+          });
         },
       })
     );
