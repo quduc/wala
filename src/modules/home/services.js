@@ -19,3 +19,22 @@ export function fetchPostApi(data) {
 export function addLikeApi({ postId }) {
   return baseApi.put(`/post/${postId}/like`);
 }
+
+export function addCommentApi({ postId, content }) {
+  return baseApi.post(`/post/comment`, {
+    content,
+    postId,
+  });
+}
+
+export function getPostDetailApi({ postId }) {
+  return baseApi.get(`/post/postDetail`, {
+    postId,
+  });
+}
+
+export function deleteCommentApi({ postId }) {
+  return baseApi.delete(`/post/comment`, {
+    postId,
+  });
+}

@@ -12,6 +12,7 @@ const initialState = {
   loadingPost: false,
   loadingLoadMore: false,
   loadMoreOffset: 0,
+  loadingAddComment: false,
 };
 
 const homeSlice = createSlice({
@@ -66,6 +67,19 @@ const homeSlice = createSlice({
     loadMorePostFailed: (state) => {
       state.loadingLoadMore = false;
     },
+    addComment: (state) => {
+      state.loadingAddComment = true;
+    },
+    addCommentSucceeded: (state, action) => {
+      const index = state.post.items.findIndex(
+        (item) => item.id === action.payload?.data?.postId
+      );
+      state.loadingAddComment = false;
+      state.post.items[index].members.push(action.payload?.data);
+    },
+    addCommentFailed: (state) => {
+      state.loadingAddComment = true;
+    },
   },
 });
 
@@ -85,6 +99,9 @@ export const {
   loadMorePost,
   loadMorePostSucceeded,
   loadMorePostFailed,
+  addComment,
+  addCommentSucceeded,
+  addCommentFailed,
 } = actions;
 
 export default reducer;

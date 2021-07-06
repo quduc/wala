@@ -1,5 +1,8 @@
 import { put, call, takeEvery, select } from "redux-saga/effects";
 import {
+  addComment,
+  addCommentFailed,
+  addCommentSucceeded,
   addLike,
   addLikeFailed,
   addLikeSucceeded,
@@ -14,7 +17,12 @@ import {
   loadMorePostSucceeded,
 } from "./slice";
 
-import { addLikeApi, createPostApi, fetchPostApi } from "./services";
+import {
+  addCommentApi,
+  addLikeApi,
+  createPostApi,
+  fetchPostApi,
+} from "./services";
 import { loadMorePostOffset } from "./selectors";
 import reactotron from "reactotron-react-native";
 
@@ -67,9 +75,22 @@ function* loadMorePostSideEffect({ payload }) {
   }
 }
 
+function* addCommentSideEffect({ payload }) {
+  reactotron.log({ payload });
+  try {
+    const response = yield call(addCommentApi, payload.data);
+    yield put(addCommentSucceeded(response));
+    if (payload.onSuccess) yield call(payload.onSuccess, response);
+  } catch (error) {
+    yield put(addCommentFailed(error));
+    if (payload.onError) yield call(payload.onError, error);
+  }
+}
+
 export default function* homeSaga() {
   yield takeEvery(createPost.type, createPostSideEffect);
   yield takeEvery(fetchPost.type, fetchPostSideEffect);
   yield takeEvery(addLike.type, addLikeSideEffect);
   yield takeEvery(loadMorePost.type, loadMorePostSideEffect);
+  yield takeEvery(addComment.type, addCommentSideEffect);
 }
