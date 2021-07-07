@@ -15,6 +15,9 @@ import {
   loadMorePost,
   loadMorePostFailed,
   loadMorePostSucceeded,
+  onRefresh,
+  onRefreshFailed,
+  onRefreshSucceeded,
 } from "./slice";
 
 import {
@@ -86,10 +89,22 @@ function* addCommentSideEffect({ payload }) {
   }
 }
 
+function* refreshPostSideEffect({ payload }) {
+  try {
+    const response = yield call(fetchPostApi);
+    yield put(onRefreshSucceeded(response));
+    if (payload.onSuccess) yield call(payload.onSuccess, response);
+  } catch (error) {
+    yield put(onRefreshFailed(error));
+    if (payload.onError) yield call(payload.onError, error);
+  }
+}
+
 export default function* homeSaga() {
   yield takeEvery(createPost.type, createPostSideEffect);
   yield takeEvery(fetchPost.type, fetchPostSideEffect);
   yield takeEvery(addLike.type, addLikeSideEffect);
   yield takeEvery(loadMorePost.type, loadMorePostSideEffect);
   yield takeEvery(addComment.type, addCommentSideEffect);
+  yield takeEvery(onRefresh.type, refreshPostSideEffect);
 }

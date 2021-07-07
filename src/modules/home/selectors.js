@@ -31,3 +31,8 @@ export const loadMorePostOffset = createSelector(
   homeSelector,
   (homeReducer) => homeReducer.loadMoreOffset
 );
+
+export const refreshSelector = createSelector(
+  homeSelector,
+  (homeReducer) => homeReducer.refresh
+);

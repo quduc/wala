@@ -13,6 +13,8 @@ const initialState = {
   loadingLoadMore: false,
   loadMoreOffset: 0,
   loadingAddComment: false,
+
+  refresh: false,
 };
 
 const homeSlice = createSlice({
@@ -80,6 +82,18 @@ const homeSlice = createSlice({
     addCommentFailed: (state) => {
       state.loadingAddComment = true;
     },
+    onRefresh: (state) => {
+      state.refresh = true;
+      state.loadMoreOffset = 0;
+    },
+    onRefreshSucceeded: (state, action) => {
+      state.refresh = false;
+      state.post.items = action.payload.items;
+      state.post.total = action.payload.total;
+    },
+    onRefreshFailed: () => {
+      state.refresh = false;
+    },
   },
 });
 
@@ -102,6 +116,9 @@ export const {
   addComment,
   addCommentSucceeded,
   addCommentFailed,
+  onRefresh,
+  onRefreshSucceeded,
+  onRefreshFailed,
 } = actions;
 
 export default reducer;

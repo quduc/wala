@@ -17,14 +17,20 @@ import { fetchProfile } from "@modules/user/slice";
 import { fetchTotalUnReadNotification } from "@modules/notification/slice";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { useDebounce } from "@common/customHook";
-import { FlatList } from "react-native";
+import { FlatList, RefreshControl } from "react-native";
 import {
   loadingFetchPostSelector,
   loadingLoadMoreSelector,
   postSelector,
+  refreshSelector,
 } from "@modules/home/selectors";
 import keyExtractor from "@utils/keyExtractor";
-import { addLike, fetchPost, loadMorePost } from "@modules/home/slice";
+import {
+  addLike,
+  fetchPost,
+  loadMorePost,
+  onRefresh,
+} from "@modules/home/slice";
 import Toast from "react-native-toast-message";
 import { profileSelector } from "@modules/user/selectors";
 import images from "@assets/images";
@@ -42,6 +48,7 @@ export default function Home() {
   const profile = useSelector(profileSelector);
   const loading = useSelector(loadingFetchPostSelector);
   const loadingLoadMore = useSelector(loadingLoadMoreSelector);
+  const refresh = useSelector(refreshSelector);
   const { navigate } = useNavigation();
   useFocusEffect(
     useCallback(
@@ -98,6 +105,22 @@ export default function Home() {
   const onCancel = () => {
     setValueSearch("");
     Keyboard.dismiss();
+  };
+
+  const onRefreshPost = () => {
+    if (refresh) return;
+    dispatch(
+      onRefresh({
+        onError: (e) => {
+          Toast.show({
+            type: "error",
+            props: {
+              message: e.errorMessage,
+            },
+          });
+        },
+      })
+    );
   };
 
   const renderItem = useCallback(({ item }) => {
@@ -206,6 +229,13 @@ export default function Home() {
         onEndReachedThreshold={0.3}
         onEndReached={onLoadMore}
         ListFooterComponent={renderLoadMore}
+        refreshControl={
+          <RefreshControl
+            refreshing={refresh}
+            onRefresh={onRefreshPost}
+            tintColor={colors.white}
+          />
+        }
       />
     </Body>
   );
