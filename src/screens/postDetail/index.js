@@ -11,13 +11,14 @@ import { addLike } from "@modules/home/slice";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import _ from "lodash";
 import images from "@assets/images";
 import { useModal } from "@common/customHook";
 import { useTranslation } from "react-i18next";
 import { Touchable } from "@components/";
 import * as screenTypes from "@navigation/screenTypes";
+import { profileSelector } from "@modules/user/selectors";
 
 export default PostDetail = () => {
   const route = useRoute();
@@ -33,6 +34,8 @@ export default PostDetail = () => {
   const [isLiked, setIsLiked] = useState(false);
   const [totalLike, setTotalLike] = useState(false);
   const { navigate } = useNavigation();
+  const profile = useSelector(profileSelector);
+
   useEffect(() => {
     getData();
   }, []);
@@ -182,7 +185,14 @@ export default PostDetail = () => {
                 defaultImage={images.default_avatar}
                 circle={30}
               />
-              <Text bold size={16} ml={8}>
+              <Text
+                bold
+                size={16}
+                ml={8}
+                color={
+                  profile?.id === item?.userId ? colors.orange : colors.white
+                }
+              >
                 {`${item?.name} :`}
               </Text>
               <Text size={16}>
