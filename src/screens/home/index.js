@@ -31,6 +31,7 @@ import images from "@assets/images";
 import colors from "@assets/colors";
 import SvgComponent from "@assets/svg";
 import * as screenTypes from "@navigation/screenTypes";
+import moment from "moment";
 
 export default function Home() {
   const [valueSearch, setValueSearch] = useState("");
@@ -117,9 +118,18 @@ export default function Home() {
               defaultImage={images.default_avatar}
               circle={44}
             />
-            <Text size={18} color={colors.white} pl={8}>
-              {item?.name}
-            </Text>
+            <Block>
+              <Text size={16} color={colors.white} bold pl={8}>
+                {item?.name}
+              </Text>
+              <Text size={12} color={colors.white} pl={8} medium>
+                Created:{" "}
+                <Text size={12} color={colors.white}>
+                  {" "}
+                  {moment(item?.createdAt).format("hh:mm A - DD/MM/YYYY")}{" "}
+                </Text>
+              </Text>
+            </Block>
           </Block>
           <Icon
             touchable

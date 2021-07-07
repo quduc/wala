@@ -18,10 +18,10 @@ import { useFormik } from "formik";
 import i18next from "i18next";
 import ImagePicker from "./components/ImagePicker";
 import { useDispatch, useSelector } from "react-redux";
-import { createPost } from "@modules/home/slice";
+import { createPost, fetchPost } from "@modules/home/slice";
 import { loadingCreatePostSelector } from "@modules/home/selectors";
-import reactotron from "reactotron-react-native";
 import Toast from "react-native-toast-message";
+import * as screenTypes from "@navigation/screenTypes";
 
 const validate = (values) => {
   const errors = {};
@@ -48,7 +48,19 @@ const CreatePostModal = () => {
   });
 
   const onGoBack = () => {
-    navigation.goBack();
+    navigation.navigate(screenTypes.HomeStack);
+    dispatch(
+      fetchPost({
+        onError: (e) => {
+          Toast.show({
+            type: "error",
+            props: {
+              message: e.errorMessage,
+            },
+          });
+        },
+      })
+    );
   };
 
   const onCreatePostRoom = () => {

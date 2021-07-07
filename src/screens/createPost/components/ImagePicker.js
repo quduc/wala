@@ -58,7 +58,7 @@ const ImagePicker = ({ uriImage, setUriImage, ignore }) => {
     >
       <ImageBackground
         resizeMode="cover"
-        source={{ uri: `data:image/gif;base64,${uriImage}` }}
+        source={{ uri: `${uriImage.uri}` }}
         style={styles.imageBackground}
         imageStyle={styles.image}
       >
