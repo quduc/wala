@@ -1,13 +1,13 @@
 /* eslint-disable react/jsx-wrap-multilines */
-import React from 'react';
-import { Text } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
-import MaskedView from '@react-native-community/masked-view';
-import { moderateScale } from '@common/scale';
-import PropTypes from 'prop-types';
-import colors from '@assets/colors';
-import fontSize from '@assets/fontSize';
-import fonts from '@assets/fontFamily';
+import React from "react";
+import { Text } from "react-native";
+import LinearGradient from "react-native-linear-gradient";
+import MaskedView from "@react-native-community/masked-view";
+import { moderateScale } from "@common/scale";
+import PropTypes from "prop-types";
+import colors from "@assets/colors";
+import fontSize from "@assets/fontSize";
+import fonts from "@assets/fontFamily";
 
 const TextView = ({
   flex,
@@ -68,7 +68,7 @@ const TextView = ({
       fontFamily: fonts.primary,
       color: colors.textPrimary,
     },
-
+    underline && { textDecorationLine: "underline" },
     flex && { flex },
     m && { margin: moderateScale(m) },
     mt && { marginTop: moderateScale(mt) },
@@ -83,16 +83,16 @@ const TextView = ({
     pb && { paddingBottom: moderateScale(pb) },
     pl && { paddingLeft: moderateScale(pl) },
     ph && { paddingHorizontal: moderateScale(ph) },
-    alignItemsStart && { alignItems: 'flex-start' },
-    alignItemsEnd && { alignItems: 'flex-end' },
-    justifyStart && { justifyContent: 'flex-start' },
-    justifyEnd && { justifyContent: 'flex-end' },
-    center && { textAlign: 'center' },
-    right && { alignSelf: 'flex-end', textAlign: 'right' },
-    left && { alignSelf: 'flex-start', textAlign: 'left' },
+    alignItemsStart && { alignItems: "flex-start" },
+    alignItemsEnd && { alignItems: "flex-end" },
+    justifyStart && { justifyContent: "flex-start" },
+    justifyEnd && { justifyContent: "flex-end" },
+    center && { textAlign: "center" },
+    right && { alignSelf: "flex-end", textAlign: "right" },
+    left && { alignSelf: "flex-start", textAlign: "left" },
     maxWidth && { maxWidth },
     maxHeight && { maxHeight },
-    textAlignCenter && { textAlign: 'center' },
+    textAlignCenter && { textAlign: "center" },
 
     size && { fontSize: size },
     h1 && {
@@ -153,10 +153,10 @@ const TextView = ({
       fontWeight,
     },
     italic && {
-      fontStyle: 'italic',
+      fontStyle: "italic",
     },
     uppercase && {
-      textTransform: 'uppercase',
+      textTransform: "uppercase",
     },
 
     letterSpacing && {
@@ -166,12 +166,13 @@ const TextView = ({
     style && style,
   ];
 
-  const GradientText = props => (
+  const GradientText = (props) => (
     <MaskedView maskElement={<Text {...props} />}>
       <LinearGradient
         colors={[`${colors.startColorSong}`, `${colors.endColorSong}`]}
         start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}>
+        end={{ x: 1, y: 0 }}
+      >
         <Text {...props} style={[props.style, { opacity: 0 }]} />
       </LinearGradient>
     </MaskedView>

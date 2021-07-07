@@ -18,6 +18,7 @@ export const ListUsers = "ListUsers";
 export const ListHost = "ListHost";
 export const ListRoom = "ListRoom";
 export const PostDetail = "PostDetail";
+export const ListLike = "ListLike";
 
 export const ChatStack = "ChatStack";
 export const ChatScreen = "ChatScreen";
@@ -27,9 +28,6 @@ export const AddSongsToPlaylistScreen = "AddSongsToPlaylistScreen";
 
 export const CreateRoomStack = "CreateRoomStack";
 export const CreatePostScreen = "CreatePostScreen";
-
-export const UpdateRoomScreen = "UpdateRoomScreen";
-export const SuggestSong = "SuggestSong";
 
 export const NotificationScreen = "NotificationScreen";
 

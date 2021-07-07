@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-wrap-multilines */
 import React, { useEffect } from "react";
-import { Body, Block, Loading } from "@components/index";
+import { Body, Block, Loading, Text } from "@components/index";
 
 import Header from "@components/header";
 import { FlatList, RefreshControl } from "react-native";
@@ -17,8 +17,10 @@ import {
 } from "@modules/notification/selectors";
 import colors from "@assets/colors";
 import NotificationItem from "./components/notificationItem";
+import { useTranslation } from "react-i18next";
 
 const Notification = () => {
+  const { t } = useTranslation();
   const notificatiions = useSelector(notificationsSelector);
   const fetchNotificationsLoading = useSelector(
     fetchNotificationsLoadingSelector
@@ -71,6 +73,11 @@ const Notification = () => {
               <Loading />
             </Block>
           )
+        }
+        ListEmptyComponent={
+          <Text size={16} center middle mt={64}>
+            {t("common:noData")}
+          </Text>
         }
       />
     </Body>

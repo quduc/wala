@@ -1,39 +1,36 @@
-import React from 'react';
-import SvgComponent from '@assets/svg';
-import images from '@assets/images';
-import PropTypes from 'prop-types';
-import colors from '@assets/colors';
-import { Block, Text, Image, Icon } from '@components/index';
-import SmallButton from '@components/button/ButtonSmall';
+import React from "react";
+import SvgComponent from "@assets/svg";
+import images from "@assets/images";
+import PropTypes from "prop-types";
+import colors from "@assets/colors";
+import { Block, Text, Image, Icon } from "@components/index";
+import SmallButton from "@components/button/ButtonSmall";
 
 import {
   RANK_POSITION,
   MAP_SCREEN_TYPE_TO_ICON,
   MAP_INDEX_TO_ICON,
-} from '@common/constant';
-import { followFriend, addFriend } from '@modules/user/slice';
-import { useDispatch, useSelector } from 'react-redux';
-import Toast from 'react-native-toast-message';
-import { profileSelector } from '@modules/user/selectors';
+} from "@common/constant";
+import { followFriend, addFriend } from "@modules/user/slice";
+import { useDispatch, useSelector } from "react-redux";
+import Toast from "react-native-toast-message";
+import { profileSelector } from "@modules/user/selectors";
+import reactotron from "reactotron-react-native";
+import { addFriendApi, followFriendApi } from "@modules/user/services";
 
-const UserItem = ({ item, index, iconType, valueSearch }) => {
+const UserItem = ({ item, index, iconType, onSuccess }) => {
+  reactotron.log({ item });
   const profile = useSelector(profileSelector);
   const dispatch = useDispatch();
-  const getIconByFriendStatus = () => {
+  const getIconByFriendStatus = (id) => {
     switch (item?.friendStatus) {
-      case 'FRIEND':
+      case "FRIEND":
+        return <Icon touchable={true} xml={SvgComponent.following} mr={16} />;
+      case "PENDING":
         return (
           <Icon
-            touchable={item.requestDisable !== '1'}
-            xml={SvgComponent.following}
-            mr={16}
-          />
-        );
-      case 'PENDING':
-        return (
-          <Icon
-            onPress={() => onAddFriend('PENDING')}
-            touchable={item.requestDisable !== '1'}
+            onPress={onAddFriend}
+            touchable={true}
             xml={SvgComponent.waitingAccept}
             mr={16}
           />
@@ -41,53 +38,47 @@ const UserItem = ({ item, index, iconType, valueSearch }) => {
       default:
         return (
           <Icon
-            onPress={() => onAddFriend('NOTHING')}
-            touchable={item.requestDisable !== '1'}
+            onPress={onAddFriend}
+            touchable={true}
             xml={SvgComponent.addFriend}
             mr={16}
           />
         );
     }
   };
-  // iconType: xu ly trong slice
-  const onFollowFriend = () => {
-    dispatch(
-      followFriend({
-        data: {
-          userId: item.id,
-          isNeedUpdate: true,
-          iconType,
+
+  const onFollowFriend = async () => {
+    const data = {
+      userId: item?.id,
+    };
+    try {
+      await followFriendApi(data);
+      onSuccess && onSuccess();
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        props: {
+          message: error.errorMessage,
         },
-        onError: error => {
-          Toast.show({
-            type: 'error',
-            props: {
-              message: error.errorMessage,
-            },
-          });
-        },
-      }),
-    );
+      });
+    }
   };
-  const onAddFriend = () => {
-    dispatch(
-      addFriend({
-        data: {
-          userId: item.id,
-          type: 'PENDING',
-          isNeedUpdate: true,
-          iconType,
+  const onAddFriend = async () => {
+    const data = {
+      userId: item?.id,
+      type: "PENDING",
+    };
+    try {
+      await addFriendApi(data);
+      onSuccess && onSuccess();
+    } catch (error) {
+      Toast.show({
+        type: "error",
+        props: {
+          message: error.errorMessage,
         },
-        onError: error => {
-          Toast.show({
-            type: 'error',
-            props: {
-              message: error.errorMessage,
-            },
-          });
-        },
-      }),
-    );
+      });
+    }
   };
   return (
     <Block
@@ -97,16 +88,8 @@ const UserItem = ({ item, index, iconType, valueSearch }) => {
       borderBottom
       pb={13}
       mb={13}
-      mr={16}>
-      {!valueSearch &&
-        (RANK_POSITION.includes(index) ? (
-          <Icon xml={MAP_INDEX_TO_ICON[index]} ml={13} />
-        ) : (
-          <Text h5 ph={10} bold ml={13}>
-            {index + 1}
-          </Text>
-        ))}
-
+      mr={16}
+    >
       <Image
         uri={item?.avatar}
         defaultImage={images.default_avatar}
@@ -114,7 +97,7 @@ const UserItem = ({ item, index, iconType, valueSearch }) => {
         mh={16}
       />
       <Block flex={1}>
-        <Text c1 extraBold>
+        <Text size={16} extraBold>
           {item.name}
         </Text>
         {iconType && (
@@ -128,19 +111,19 @@ const UserItem = ({ item, index, iconType, valueSearch }) => {
       </Block>
       {profile.id !== item.id && (
         <>
-          {getIconByFriendStatus()}
+          {getIconByFriendStatus(item.id)}
           {item?.isFollowed ? (
             <SmallButton
               onPress={onFollowFriend}
               bg={colors.yellow}
-              title='following'
+              title="following"
               icon={SvgComponent.trophySmall}
             />
           ) : (
             <SmallButton
               onPress={onFollowFriend}
               bg={colors.gray}
-              title='follow'
+              title="follow"
               icon={SvgComponent.trophySmall}
             />
           )}

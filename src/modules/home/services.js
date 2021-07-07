@@ -38,3 +38,9 @@ export function deleteCommentApi({ postId }) {
     postId,
   });
 }
+
+export function getListLikeApi({ postId }) {
+  return baseApi.get(`/post/like`, {
+    postId,
+  });
+}

@@ -16,6 +16,8 @@ import _ from "lodash";
 import images from "@assets/images";
 import { useModal } from "@common/customHook";
 import { useTranslation } from "react-i18next";
+import { Touchable } from "@components/";
+import * as screenTypes from "@navigation/screenTypes";
 
 export default PostDetail = () => {
   const route = useRoute();
@@ -30,6 +32,7 @@ export default PostDetail = () => {
   const [loading, setLoading] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [totalLike, setTotalLike] = useState(false);
+  const { navigate } = useNavigation();
   useEffect(() => {
     getData();
   }, []);
@@ -80,6 +83,13 @@ export default PostDetail = () => {
         },
       })
     );
+  };
+
+  const goListLike = () => {
+    navigate(screenTypes.HomeDetailStack, {
+      screen: screenTypes.ListLike,
+      params: { postId: item?.id },
+    });
   };
 
   const onAddComment = async () => {
@@ -148,7 +158,7 @@ export default PostDetail = () => {
         </Text>
         {item?.image ? <Image uri={item?.image} height={300} /> : null}
         <Block row mt={16} justifyBetween mb={16}>
-          <Block row middle>
+          <Touchable row middle onPress={goListLike}>
             <Icon
               touchable
               onPress={() => {
@@ -156,10 +166,10 @@ export default PostDetail = () => {
               }}
               xml={isLiked ? SvgComponent.iconLoveRedBig : SvgComponent.love}
             />
-            <Text size={16} ml={8} medium>
-              {totalLike}
+            <Text size={16} ml={8} medium underline>
+              {totalLike} Like
             </Text>
-          </Block>
+          </Touchable>
           <Text size={16} medium>
             {listComment?.length} comments
           </Text>
