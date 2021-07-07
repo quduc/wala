@@ -45,9 +45,9 @@ const homeSlice = createSlice({
     },
     addLike: (state) => {},
     addLikeSucceeded: (state, action) => {
-      const index = state.post.items.findIndex(
-        (item) => item.id === action.payload?.data?.postId
-      );
+      const index = state.post.items.findIndex((item) => {
+        return item?.id == action.payload?.data?.postId;
+      });
       if (index !== -1) {
         state.post.items[index].isLiked = !state.post.items[index].isLiked;
       }

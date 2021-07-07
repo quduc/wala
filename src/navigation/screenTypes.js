@@ -26,7 +26,7 @@ export const ChatDetail = "ChatDetail";
 
 export const AddSongsToPlaylistScreen = "AddSongsToPlaylistScreen";
 
-export const CreateRoomStack = "CreateRoomStack";
+export const CreatePostStack = "CreatePostStack";
 export const CreatePostScreen = "CreatePostScreen";
 
 export const NotificationScreen = "NotificationScreen";

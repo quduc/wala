@@ -13,7 +13,7 @@ import HomeStack from "./HomeStack";
 import ChatStack from "./ChatStack";
 import UserStack from "./UserStack";
 import NotificationStack from "./NotificationStack";
-import CreateRoomStack from "./CreateRoomStack";
+import CreatePostStack from "./CreatePostStack";
 
 const BottomTab = createBottomTabNavigator();
 
@@ -75,7 +75,7 @@ const CusomTabBottom = ({ state, navigation }) => {
                   iconNameActive: SvgComponent.docActive,
                   iconName: SvgComponent.doc,
                 };
-              case screenTypes.CreateRoomStack:
+              case screenTypes.CreatePostStack:
                 return {
                   iconNameActive: SvgComponent.createGroup,
                   iconName: SvgComponent.createGroup,
@@ -140,8 +140,8 @@ function BottomTabs() {
       <BottomTab.Screen name={screenTypes.HomeStack} component={HomeStack} />
       <BottomTab.Screen name={screenTypes.ChatStack} component={ChatStack} />
       <BottomTab.Screen
-        name={screenTypes.CreateRoomStack}
-        component={CreateRoomStack}
+        name={screenTypes.CreatePostStack}
+        component={CreatePostStack}
         listeners={({ navigation }) => ({
           tabPress: (event) => {
             event.preventDefault();
