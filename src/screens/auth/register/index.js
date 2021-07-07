@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import React, { useRef } from "react";
+import { useNavigation } from "@react-navigation/native";
 import {
   Body,
   Text,
@@ -10,53 +10,54 @@ import {
   Block,
   Icon,
   Header,
-} from '@components/index';
-import * as screenTypes from '@navigation/screenTypes';
-import colors from '@assets/colors';
-import { useDispatch, useSelector } from 'react-redux';
-import { signUpWithEmail } from '@modules/auth/slice';
-import { saveEmail } from '@modules/user/slice';
+} from "@components/index";
+import * as screenTypes from "@navigation/screenTypes";
+import colors from "@assets/colors";
+import { useDispatch, useSelector } from "react-redux";
+import { signUpWithEmail } from "@modules/auth/slice";
+import { saveEmail } from "@modules/user/slice";
 
-import { signUpWithEmailLoadingSelector } from '@modules/auth/selectors';
-import { profileSelector } from '@modules/user/selectors';
-import { useFormik } from 'formik';
-import { isEmail, isPassword, isUserName } from '@utils/index';
-import SvgComponent from '@assets/svg';
-import { useModal } from '@common/customHook';
-import { useTranslation } from 'react-i18next';
-import i18next from 'i18next';
+import { signUpWithEmailLoadingSelector } from "@modules/auth/selectors";
+import { profileSelector } from "@modules/user/selectors";
+import { useFormik } from "formik";
+import { isEmail, isPassword, isUserName } from "@utils/index";
+import SvgComponent from "@assets/svg";
+import { useModal } from "@common/customHook";
+import { useTranslation } from "react-i18next";
+import i18next from "i18next";
+import Toast from "react-native-toast-message";
 
-const validate = values => {
+const validate = (values) => {
   const errors = {};
   if (!values.name.trim()) {
-    errors.name = i18next.t('message:MSG_2', {
-      field: i18next.t('common:username'),
+    errors.name = i18next.t("message:MSG_2", {
+      field: i18next.t("common:username"),
     });
   } else if (!isUserName(values.name.trim())) {
-    errors.name = i18next.t('message:MSG_5');
+    errors.name = i18next.t("message:MSG_5");
   }
 
   if (!values.email.trim()) {
-    errors.email = i18next.t('message:MSG_2', {
-      field: i18next.t('common:email'),
+    errors.email = i18next.t("message:MSG_2", {
+      field: i18next.t("common:email"),
     });
   } else if (!isEmail(values.email.trim())) {
-    errors.email = i18next.t('message:MSG_3');
+    errors.email = i18next.t("message:MSG_3");
   }
 
   if (!values.password) {
-    errors.password = i18next.t('message:MSG_2', {
-      field: i18next.t('common:password'),
+    errors.password = i18next.t("message:MSG_2", {
+      field: i18next.t("common:password"),
     });
   } else if (!isPassword(values.password)) {
-    errors.password = i18next.t('message:MSG_4');
+    errors.password = i18next.t("message:MSG_4");
   }
 
   return errors;
 };
 
 const Register = () => {
-  const { t } = useTranslation(['auth', 'common']);
+  const { t } = useTranslation(["auth", "common"]);
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const emailRef = useRef(null);
@@ -67,7 +68,7 @@ const Register = () => {
   const signUpWithEmailLoading = useSelector(signUpWithEmailLoadingSelector);
 
   const formik = useFormik({
-    initialValues: { name: '', email: profile.email, password: '' },
+    initialValues: { name: "", email: profile.email, password: "" },
     validate,
   });
 
@@ -99,19 +100,23 @@ const Register = () => {
           password: formik.values.password,
         },
         onSuccess: () => {
-          modal.success({
-            content: t('txt_register_success'),
-            cancelText: t('txt_btn_back_to_login'),
-            okButton: () => goToLogin(),
+          Toast.show({
+            type: "success",
+            props: {
+              message: t("txt_register_success"),
+              onClose: () => goToLogin(),
+            },
           });
         },
-        onError: e => {
-          modal.error({
-            title: t('common:title_error'),
-            content: e.errorMessage,
+        onError: (e) => {
+          Toast.show({
+            type: "error",
+            props: {
+              message: e.errorMessage,
+            },
           });
         },
-      }),
+      })
     );
   };
 
@@ -131,13 +136,13 @@ const Register = () => {
       <TextInput
         mt={40}
         height={40}
-        placeholder={t('placeholder_username')}
-        returnKeyType='next'
+        placeholder={t("placeholder_username")}
+        returnKeyType="next"
         iconLeft={SvgComponent.userName}
         onSubmitEditing={onFocusEmail}
         value={formik.values.name}
-        onBlur={e => handleTrimWhenBlurInput('name', e)}
-        onChangeText={formik.handleChange('name')}
+        onBlur={(e) => handleTrimWhenBlurInput("name", e)}
+        onChangeText={formik.handleChange("name")}
         error={formik.errors.name && formik.touched.name}
         errorMessage={formik.errors.name}
       />
@@ -147,10 +152,10 @@ const Register = () => {
         onSubmitEditing={onFucusPassword}
         ref={emailRef}
         selectTextOnFocus
-        returnKeyType='next'
-        onBlur={e => handleTrimWhenBlurInput('email', e)}
+        returnKeyType="next"
+        onBlur={(e) => handleTrimWhenBlurInput("email", e)}
         value={formik.values.email}
-        onChangeText={formik.handleChange('email')}
+        onChangeText={formik.handleChange("email")}
         error={formik.errors.email && formik.touched.email}
         errorMessage={formik.errors.email}
       />
@@ -159,8 +164,8 @@ const Register = () => {
         mt={20}
         ref={passwordRef}
         value={formik.values.password}
-        onBlur={formik.handleBlur('password')}
-        onChangeText={formik.handleChange('password')}
+        onBlur={formik.handleBlur("password")}
+        onChangeText={formik.handleChange("password")}
         error={formik.errors.password && formik.touched.password}
         errorMessage={formik.errors.password}
       />
@@ -172,16 +177,17 @@ const Register = () => {
         gradient
         borderRadius={3}
         disabled={isDisableButton()}
-        onPress={onRegister}>
+        onPress={onRegister}
+      >
         <Text c1 medium>
-          {t('txt_register')}
+          {t("txt_register")}
         </Text>
       </Button>
 
       <Button mt={18} p={10} bg={colors.blue} borderRadius={3}>
         <Icon xml={SvgComponent.facebookIcon} mr={15} />
         <Text c1 medium>
-          {t('txt_login_with_fb')}
+          {t("txt_login_with_fb")}
         </Text>
       </Button>
       {contextHolder}
