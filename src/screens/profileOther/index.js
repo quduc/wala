@@ -56,7 +56,7 @@ export default ProfileOther = () => {
   const goMessenger = () => {
     navigate(screenTypes.ChatStack, {
       screen: screenTypes.ChatDetail,
-      params: { userId },
+      params: { userId, name: dataProfile?.name },
     });
   };
 
