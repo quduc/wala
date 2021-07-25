@@ -14,6 +14,7 @@ import {
   DEFAULT_MODE,
 } from "../config";
 import reactotron from "reactotron-react-native";
+import { Platform } from "react-native";
 
 let HEADERS = {
   Accept: "application/json",
@@ -48,8 +49,10 @@ const getBaseURLWithMode = async () => {
   } catch (e) {
     console.log(e);
   }
-
-  return "http://localhost:3000";
+  if (Platform.OS == "ios") {
+    return "http://localhost:3000";
+  }
+  return "http://192.168.1.53:3000";
 };
 
 export const apiGlobal = APISauce.create({
