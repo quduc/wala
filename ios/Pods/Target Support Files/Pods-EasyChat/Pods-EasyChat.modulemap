@@ -1,6 +1,0 @@
-module Pods_EasyChat {
-  umbrella header "Pods-EasyChat-umbrella.h"
-
-  export *
-  module * { export * }
-}
