@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 import React, { useState, useEffect, useCallback } from "react";
-import { Keyboard } from "react-native";
+import { Keyboard, Platform } from "react-native";
 import {
   Text,
   Body,
@@ -16,7 +16,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProfile } from "@modules/user/slice";
 import { fetchTotalUnReadNotification } from "@modules/notification/slice";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { useDebounce } from "@common/customHook";
 import { FlatList, RefreshControl } from "react-native";
 import {
   loadingFetchPostSelector,
@@ -40,24 +39,14 @@ import * as screenTypes from "@navigation/screenTypes";
 import moment from "moment";
 
 export default function Home() {
-  const [valueSearch, setValueSearch] = useState("");
   const { t } = useTranslation("home");
   const dispatch = useDispatch();
-  const debouncedSearchTerm = useDebounce(valueSearch, 1000);
   const post = useSelector(postSelector);
   const profile = useSelector(profileSelector);
   const loading = useSelector(loadingFetchPostSelector);
   const loadingLoadMore = useSelector(loadingLoadMoreSelector);
   const refresh = useSelector(refreshSelector);
   const { navigate } = useNavigation();
-  useFocusEffect(
-    useCallback(
-      () => () => {
-        setValueSearch("");
-      },
-      []
-    )
-  );
 
   useEffect(() => {
     onFetchData();
@@ -96,15 +85,6 @@ export default function Home() {
         },
       })
     );
-  };
-
-  const _onChangeText = (value) => {
-    setValueSearch(value);
-  };
-
-  const onCancel = () => {
-    setValueSearch("");
-    Keyboard.dismiss();
   };
 
   const onRefreshPost = () => {
@@ -167,7 +147,16 @@ export default function Home() {
         <Text size={14} mv={8}>
           {item.title}
         </Text>
-        {item?.image ? <Image uri={item?.image} height={300} /> : null}
+        {item?.image ? (
+          <Image
+            uri={
+              Platform.OS !== "ios"
+                ? "http://192.168.1.53:3000" + item?.image
+                : "http://localhost:3000" + item?.image
+            }
+            height={300}
+          />
+        ) : null}
         <Block height={1} bg={"gray"} mt={item?.image ? 32 : 16} />
       </Touchable>
     );
@@ -199,20 +188,34 @@ export default function Home() {
       </Block>
     ) : null;
 
+  const goListUser = () => {
+    navigate(screenTypes.HomeDetailStack, {
+      screen: screenTypes.ListUsers,
+    });
+  };
+
   return (
     <Body loading={loading} ph={16}>
       <Text size={24} bold pt={32}>
         {`Hi ${profile?.name},`}
       </Text>
       <Block row middle mt={10}>
-        <Block flex={1}>
-          <Search
-            placeholder={t("placeholder_search")}
-            height={40}
-            post
-            onChangeText={_onChangeText}
-            value={valueSearch}
-          />
+        <Block flex={1} mt={16}>
+          <Touchable
+            onPress={goListUser}
+            row
+            height={56}
+            borderRadius={8}
+            borderWidth={1}
+            middle
+            borderColor={colors.gray}
+            bg={colors.gray}
+          >
+            <Icon xml={SvgComponent.searchActive} mh={10} />
+            <Text size={16} medium>
+              Search all users...
+            </Text>
+          </Touchable>
         </Block>
       </Block>
       <FlatList

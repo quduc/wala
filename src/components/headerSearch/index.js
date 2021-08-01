@@ -1,12 +1,13 @@
-import React, { useRef, useState } from 'react';
-import { StyleSheet, TextInput } from 'react-native';
-import SvgComponent from '@assets/svg';
-import PropTypes from 'prop-types';
-import { moderateScale } from '@common/scale';
-import { useNavigation } from '@react-navigation/core';
-import colors from '@assets/colors';
-import { Block, Text, Icon } from '@components/index';
-import { useTranslation } from 'react-i18next';
+import React, { useRef, useState } from "react";
+import { StyleSheet, TextInput } from "react-native";
+import SvgComponent from "@assets/svg";
+import PropTypes from "prop-types";
+import { moderateScale } from "@common/scale";
+import { useNavigation } from "@react-navigation/core";
+import colors from "@assets/colors";
+import { Block, Text, Icon } from "@components/index";
+import { useTranslation } from "react-i18next";
+import fonts from "@assets/fontFamily";
 
 const HeaderSearch = ({ title, isBack, onChangeText, onClose, value }) => {
   const navigation = useNavigation();
@@ -17,27 +18,28 @@ const HeaderSearch = ({ title, isBack, onChangeText, onClose, value }) => {
     navigation.goBack();
   };
 
-  const _setIsSearch = value => {
+  const _setIsSearch = (value) => {
     !value && onClose();
     setIsSearch(value);
   };
 
   const renderSearch = () => (
     <Block
-      width='100%'
+      width="100%"
       bg={colors.gray}
       height={40}
       middle
       borderRadius={16}
-      row>
+      row
+    >
       <Icon ml={10} mr={8} xml={SvgComponent.searchSmall} />
       <TextInput
         ref={refInput}
         maxLength={254}
-        onChangeText={value => onChangeText(value)}
+        onChangeText={(value) => onChangeText(value)}
         autoFocus
         style={styles.textInputSearch}
-        placeholder={t('searchRightHere')}
+        placeholder={t("searchRightHere")}
         placeholderTextColor={colors.textGrayDark}
         value={value}
       />
@@ -86,6 +88,7 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: moderateScale(16),
     flex: 1,
+    fontFamily: fonts.primary,
   },
 });
 HeaderSearch.propTypes = {
@@ -95,7 +98,7 @@ HeaderSearch.propTypes = {
   onClose: PropTypes.func.isRequired,
 };
 HeaderSearch.defaultProps = {
-  title: '',
+  title: "",
   isBack: true,
   onChangeText: () => {},
   onClose: () => {},

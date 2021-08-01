@@ -159,7 +159,16 @@ export default PostDetail = () => {
         <Text size={16} mt={32} mb={16}>
           {item.title}
         </Text>
-        {item?.image ? <Image uri={item?.image} height={300} /> : null}
+        {item?.image ? (
+          <Image
+            uri={
+              Platform.OS !== "ios"
+                ? "http://192.168.1.53:3000" + item?.image
+                : "http://localhost:3000" + item?.image
+            }
+            height={300}
+          />
+        ) : null}
         <Block row mt={16} justifyBetween mb={16}>
           <Touchable row middle onPress={goListLike}>
             <Icon
