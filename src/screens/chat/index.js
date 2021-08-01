@@ -24,6 +24,7 @@ import * as screenTypes from "@navigation/screenTypes";
 import { useNavigation } from "@react-navigation/native";
 import colors from "@assets/colors";
 import images from "@assets/images";
+import { useDebounce } from "@common/customHook";
 
 const ChatScreen = () => {
   const { t } = useTranslation("common");
@@ -32,14 +33,18 @@ const ChatScreen = () => {
   const loadingMessenger = useSelector(loadingFetchMessageSelector);
   const { navigate } = useNavigation();
   const [valueSearch, setValueSearch] = useState("");
+  const debouncedSearch = useDebounce(valueSearch, 500);
 
   useEffect(() => {
     getMesenger();
-  }, [getMesenger]);
+  }, [debouncedSearch]);
 
   const getMesenger = () => {
     dispatch(
       fetchMessenger({
+        data: {
+          keyword: valueSearch,
+        },
         onError: (e) => {
           Toast.show({
             type: "error",

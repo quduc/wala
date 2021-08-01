@@ -7,6 +7,7 @@ export function fetchMessageApi(data) {
   return baseApi.get(`/chat/message`, {
     offset: data?.offset || 0,
     limit: LIMIT_MESSAGES,
+    keyword: data?.keyword || "",
   });
 }
 
