@@ -48,9 +48,11 @@ const CreatePostModal = () => {
   });
 
   const onGoBack = () => {
-    navigation.navigate(screenTypes.HomeStack);
     dispatch(
       fetchPost({
+        onSuccess: () => {
+          navigation.navigate(screenTypes.HomeStack);
+        },
         onError: (e) => {
           Toast.show({
             type: "error",

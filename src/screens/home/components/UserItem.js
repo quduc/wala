@@ -3,23 +3,18 @@ import SvgComponent from "@assets/svg";
 import images from "@assets/images";
 import PropTypes from "prop-types";
 import colors from "@assets/colors";
-import { Block, Text, Image, Icon } from "@components/index";
+import { Block, Text, Image, Icon, Touchable } from "@components/index";
 import SmallButton from "@components/button/ButtonSmall";
-
-import {
-  RANK_POSITION,
-  MAP_SCREEN_TYPE_TO_ICON,
-  MAP_INDEX_TO_ICON,
-} from "@common/constant";
-import { followFriend, addFriend } from "@modules/user/slice";
+import { MAP_SCREEN_TYPE_TO_ICON } from "@common/constant";
 import { useDispatch, useSelector } from "react-redux";
 import Toast from "react-native-toast-message";
 import { profileSelector } from "@modules/user/selectors";
-import reactotron from "reactotron-react-native";
 import { addFriendApi, followFriendApi } from "@modules/user/services";
+import { useNavigation } from "@react-navigation/native";
+import * as screenTypes from "@navigation/screenTypes";
 
 const UserItem = ({ item, index, iconType, onSuccess }) => {
-  reactotron.log({ item });
+  const navigation = useNavigation();
   const profile = useSelector(profileSelector);
   const dispatch = useDispatch();
   const getIconByFriendStatus = (id) => {
@@ -80,8 +75,20 @@ const UserItem = ({ item, index, iconType, onSuccess }) => {
       });
     }
   };
+
+  const goProfile = () => {
+    if (profile.id !== item.id) {
+      return navigation.navigate(screenTypes.ProfileDetailStack, {
+        screen: screenTypes.ProfileOther,
+        params: {
+          userId: item.id,
+        },
+      });
+    }
+  };
+
   return (
-    <Block
+    <Touchable
       key={index.toString()}
       row
       middle
@@ -89,6 +96,7 @@ const UserItem = ({ item, index, iconType, onSuccess }) => {
       pb={13}
       mb={13}
       mr={16}
+      onPress={goProfile}
     >
       <Image
         uri={item?.avatar}
@@ -129,7 +137,7 @@ const UserItem = ({ item, index, iconType, onSuccess }) => {
           )}
         </>
       )}
-    </Block>
+    </Touchable>
   );
 };
 
