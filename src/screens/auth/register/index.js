@@ -183,13 +183,6 @@ const Register = () => {
           {t("txt_register")}
         </Text>
       </Button>
-
-      <Button mt={18} p={10} bg={colors.blue} borderRadius={3}>
-        <Icon xml={SvgComponent.facebookIcon} mr={15} />
-        <Text c1 medium>
-          {t("txt_login_with_fb")}
-        </Text>
-      </Button>
       {contextHolder}
     </Body>
   );
