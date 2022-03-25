@@ -51,6 +51,7 @@ const homeSlice = createSlice({
         return item?.id == action.payload?.data?.postId;
       });
       if (index !== -1) {
+        console.log("xxx", !state.post.items[index].isLiked);
         state.post.items[index].isLiked = !state.post.items[index].isLiked;
       }
     },
