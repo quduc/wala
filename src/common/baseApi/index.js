@@ -50,9 +50,9 @@ const getBaseURLWithMode = async () => {
     console.log(e);
   }
   if (Platform.OS == "ios") {
-    return "http://localhost:3000";
+    return "http://192.168.140.68:3000";
   }
-  return "http://192.168.1.53:3000";
+  return "http://192.168.140.68:3000";
 };
 
 export const apiGlobal = APISauce.create({
@@ -76,6 +76,7 @@ const showToastError = () => {
 };
 
 const handlingResponse = (response) =>
+  // console.log({response});
   new Promise((resolve, reject) => {
     if (response.status === STATUS_HTTPS.UNAUTHENTICATED) {
       return throttledResetToLogin(response);

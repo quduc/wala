@@ -163,8 +163,8 @@ export default PostDetail = () => {
           <Image
             uri={
               Platform.OS !== "ios"
-                ? "http://192.168.1.53:3000" + item?.image
-                : "http://localhost:3000" + item?.image
+                ? "http://192.168.140.68:3000" + item?.image
+                : "http://192.168.140.68:3000" + item?.image
             }
             height={300}
           />
