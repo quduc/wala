@@ -107,9 +107,6 @@ export default function Home() {
   const renderItem = useCallback(({ item }) => {
     return (
       <Touchable mt={10}
-        borderBottom
-        pv={10}
-        borderColor={colors.blackModal}
         onPress={() => {
           navigate(screenTypes.HomeDetailStack, {
             screen: screenTypes.PostDetail,
@@ -120,13 +117,13 @@ export default function Home() {
         <Block row justifyBetween middle >
           <Block row>
             <Image
-              uri={item?.user_avatar}
+              uri={"http://192.168.0.101:3000" + item?.user_avatar}
               defaultImage={images.default_avatar}
-              circle={44}
+              circle={35}
             />
             <Block>
               <Text size={16} color={colors.white} bold pl={5}>
-                {item?.user_name}
+                {item?.user_name ?? 'Tác giả'}
               </Text>
 
               <Text ml={5} type='c2' italic color={colors.white}>
@@ -146,7 +143,7 @@ export default function Home() {
         </Block>
         <Block row justifyBetween >
           <Block width={'65%'}>
-            <Text numberOfLines={3} fontWeight='bold' size={14} mv={3}>
+            <Text numberOfLines={2} fontWeight='bold' size={14} mv={3}>
               {item.title}
             </Text>
             <Text numberOfLines={3} color={'#ECECEC'} size={14} mv={3}>
@@ -166,6 +163,7 @@ export default function Home() {
             />
           ) : null}
         </Block>
+        <Block height={1} mt={10} bg={colors.gray} />
       </Touchable>
     );
   });

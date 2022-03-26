@@ -72,8 +72,8 @@ const Account = () => {
     item.route === "logoutAccount"
       ? showModal()
       : navigate(screenTypes.ProfileDetailStack, {
-          screen: item.route,
-        });
+        screen: item.route,
+      });
   };
 
   const renderItem = useCallback(
@@ -104,7 +104,6 @@ const Account = () => {
     dispatch(signOut());
     closeModal();
   };
-
   return (
     <Body ph={16}>
       <Header
@@ -115,7 +114,7 @@ const Account = () => {
       />
       <Block mt={16} row>
         {dataProfile?.avatar ? (
-          <Image source={{ uri: dataProfile?.avatar }} circle={74} />
+          <Image source={{ uri: "http://192.168.0.101:3000" + dataProfile?.avatar }} circle={74} />
         ) : (
           <Image source={images.default_avatar} circle={74} />
         )}
@@ -132,13 +131,13 @@ const Account = () => {
               <Text bold h5 center>
                 {dataProfile?.queryFollowers}
               </Text>
-              <Text medium>{t("followers")}</Text>
+              <Text medium>{'Người theo dõi'}</Text>
             </Touchable>
-            <Touchable onPress={goListFollowing}>
+            <Touchable onPress={goListFollowing} >
               <Text bold h5 center>
                 {dataProfile?.queryFollowing}
               </Text>
-              <Text medium>{t("following")} </Text>
+              <Text medium>{'Đang theo dõi'} </Text>
             </Touchable>
           </Block>
           <Button bg={colors.gray} pv={2} onPress={goEditProfile}>
@@ -148,12 +147,10 @@ const Account = () => {
           </Button>
         </Block>
       </Block>
-      <Text medium c1 mt={16} mh={16}>
+      <Text medium c1 mt={16} >
         {dataProfile?.description}
       </Text>
-      <Text bold size={20} mt={32}>
-        Settings
-      </Text>
+
       <FlatList
         data={LIST_SETTING}
         keyExtractor={keyExtractor}

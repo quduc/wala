@@ -106,7 +106,6 @@ const CreatePostModal = () => {
         size: uriImage.fileSize,
       };
     }
-    console.log({ image });
     dispatch(
       createPost({
         data: {

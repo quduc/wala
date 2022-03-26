@@ -45,7 +45,7 @@ const Notification = () => {
 
   return (
     <Body loading={false}>
-      <Header title="Notification" isBack={false} />
+      <Header title="Thông báo" isBack={false} />
       <Block mt={15} />
 
       <FlatList
@@ -75,9 +75,11 @@ const Notification = () => {
           )
         }
         ListEmptyComponent={
-          <Text size={16} center middle mt={64}>
-            {t("common:noData")}
-          </Text>
+          <Block center middle>
+            <Text size={16} mt={64}>
+              {t("common:noData")}
+            </Text>
+          </Block>
         }
       />
     </Body>

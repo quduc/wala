@@ -3,6 +3,7 @@ import { baseApi } from "@common/baseApi";
 const LIMIT_POST = 10;
 
 export function createPostApi({ title, image, description, category }) {
+  console.log({ image });
   return baseApi.postFormData("/post", {
     title,
     image,

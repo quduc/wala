@@ -3,6 +3,11 @@ import * as screenTypes from "@navigation/screenTypes";
 
 export const LIST_SETTING = [
   {
+    title: "posts",
+    icon: SvgComponent.doc,
+    route: screenTypes.MyPosts,
+  },
+  {
     title: "term",
     icon: SvgComponent.termOfUse,
     route: screenTypes.TermOfUse,

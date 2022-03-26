@@ -89,10 +89,10 @@ const ChatScreen = () => {
 
   return (
     <Body loading={false}>
-      <Header isBack={false} title={"Messenger"} />
+      <Header isBack={false} title={"Trò chuyện"} />
       <Search
         mh={16}
-        placeholder={t("Search")}
+        placeholder={'Tìm kiếm tin nhắn ...'}
         height={40}
         onChangeText={setValueSearch}
         value={valueSearch}
@@ -104,9 +104,11 @@ const ChatScreen = () => {
         keyExtractor={keyExtractor}
         showsHorizontalScrollIndicator={false}
         ListEmptyComponent={
-          <Text center middle mt={60} size={18}>
-            {t("common:noData")}
-          </Text>
+          <Block center middle>
+            <Text mt={60} size={18}>
+              {t("common:noData")}
+            </Text>
+          </Block>
         }
         refreshControl={
           <RefreshControl

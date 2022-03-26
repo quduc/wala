@@ -233,6 +233,7 @@ const userSlice = createSlice({
       state.profile.name = action.payload.data?.name;
       state.profile.avatar = action.payload.data?.avatar;
       state.profile.description = action.payload.data?.description;
+      state.profile.birthday = action.payload.data?.birthday;
     },
     updateProfileFailed: (state, action) => {
       state.loadingUpdateProfile = false;

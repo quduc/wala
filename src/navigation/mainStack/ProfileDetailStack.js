@@ -15,6 +15,7 @@ import ListFriend from "@screens/listFriend";
 
 import * as screenTypes from "@navigation/screenTypes";
 import ListFriendOther from "@screens/listFriendOther";
+import MyPosts from "@screens/user/MyPosts";
 
 const Stack = createStackNavigator();
 
@@ -43,6 +44,7 @@ export default () => (
       component={CreateNewPassword}
     />
     <Stack.Screen name={screenTypes.AboutUs} component={AboutUs} />
+    <Stack.Screen name={screenTypes.MyPosts} component={MyPosts} />
     <Stack.Screen name={screenTypes.ContactUs} component={ContactUs} />
     <Stack.Screen name={screenTypes.Notification} component={Notification} />
     <Stack.Screen name={screenTypes.PrivacyPolicy} component={PrivacyPolicy} />

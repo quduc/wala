@@ -29,6 +29,9 @@ import { preUploadFile } from '@modules/uploadFile/slice';
 import { useModal } from '@common/customHook';
 import { updateProfile } from '@modules/user/slice';
 import Toast from 'react-native-toast-message';
+import { getDays, getMonths, getYears } from '@utils/DateTime';
+import PickerSelect from '@components/picker-select';
+import moment from 'moment';
 
 const options = {
   storageOptions: {
@@ -51,9 +54,14 @@ export default function EditProfile() {
   const { navigate, goBack } = useNavigation();
   const dataProfile = useSelector(profileSelector);
   const [image, setImage] = useState(dataProfile.avatar);
+  const [imagePreview, setImagePreview] = useState("http://192.168.0.101:3000" + dataProfile.avatar);
   const [loading, setLoading] = useState(false);
   const [modal] = useModal();
   const loadingUpdate = useSelector(loadingUpdateProfileSelector);
+
+  const [year, setYear] = useState(dataProfile?.birthday ? Number(moment(dataProfile?.birthday).format('YYYY')) : new Date().getFullYear())
+  const [month, setMonth] = useState(dataProfile?.birthday ? Number(moment(dataProfile?.birthday).format('MM')) : new Date().getMonth())
+  const [day, setDay] = useState(dataProfile?.birthday ? Number(moment(dataProfile?.birthday).format('DD')) : new Date().getDay())
   const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
@@ -94,68 +102,55 @@ export default function EditProfile() {
     });
   };
 
-  const onChosenPhotoFromLibrary = cb => {
+  const onChosenPhotoFromLibrary = () => {
     launchImageLibrary(options, resImage => {
-      cb && cb();
+      // cb && cb();
       const { fileSize } = resImage;
       const mg = fileSize / 1000000;
       if (mg > 10) {
         return showErrorMessageImage(t('message:MSG_37'));
       }
-
-      if (resImage.uri) {
-        setLoading(true);
-        dispatch(
-          preUploadFile({
-            data: {
-              type: 'COVER',
-              name: resImage.fileName,
-            },
-            onSuccess: responseS3 => {
-              RNFetchBlob.fetch(
-                'PUT',
-                responseS3.data.url,
-                {
-                  'Content-Type': 'octet-stream',
-                },
-                RNFetchBlob.wrap(resImage.uri.replace('file://', '')),
-              )
-                .then(() => {
-                  const s3Url = responseS3.data.url.split('?');
-                  setImage(s3Url[0]);
-                  setLoading(false);
-                })
-                .catch(err => {
-                  showErrorMessageImage(err.errorMessage);
-                  setLoading(false);
-                });
-            },
-            onError: error => {
-              setLoading(false);
-              showErrorMessageImage(error.errorMessage);
-            },
-          }),
-        );
-      }
-    });
+      setImage(resImage);
+      setImagePreview(resImage.uri);
+      closeModal()
+    })
   };
-
   const onUpdateProfile = () => {
+    let parts;
+    let imageConvert;
+    if (image !== dataProfile.avatar) {
+      parts = image.uri.split("/");
+      imageConvert = {
+        uri: image.uri,
+        type: image.type,
+        name: parts[parts.length - 1],
+        size: image.fileSize,
+      };
+    }
     if (
+      dataProfile?.birthday === `${year}-${month}-${day}` &&
       image === dataProfile.avatar &&
       formik.values.name === dataProfile.name &&
       formik.values.description === dataProfile.description
-    )
+    ) {
       return goBack();
+
+    }
+
+    console.log({ imageConvert });
     dispatch(
       updateProfile({
         data: {
+          birthday: `${year}-${month}-${day}`,
           name: formik.values.name,
-          avatar: image,
+          avatar: imageConvert,
           description: formik.values.description,
         },
-        onSuccess: () => goBack(),
+        onSuccess: () => {
+          goBack()
+        },
         onError: e => {
+          console.log({ e });
           Toast.show({
             type: 'error',
             props: {
@@ -166,15 +161,15 @@ export default function EditProfile() {
       }),
     );
   };
-
+  console.log({ image });
   const renderImage = () => {
     if (loading) {
       return <Loading />;
     } else {
       return image ? (
-        <Image source={{ uri: image }} circle={74} />
+        <Image source={{ uri: imagePreview }} circle={100} />
       ) : (
-        <Image source={images.default_avatar} circle={74} />
+        <Image source={images.default_avatar} circle={100} />
       );
     }
   };
@@ -203,6 +198,38 @@ export default function EditProfile() {
           error={formik.errors.name}
           errorMessage={formik.errors.name}
         />
+      </Block>
+      <Block mv={10} >
+        <Text mb={10} >Ngày sinh</Text>
+        <Block row mt={10} alignItems='center' width={'100%'}>
+          <Block width={'35%'}>
+            <PickerSelect
+              placeholder="Năm"
+              heightInput={40}
+              value={year}
+              onValueChange={(value) => setYear(value)}
+              items={getYears()}
+            />
+          </Block>
+          <Block width={'30%'} mh={10}>
+            <PickerSelect
+              placeholder="Tháng"
+              heightInput={40}
+              value={month}
+              onValueChange={(value) => setMonth(value)}
+              items={getMonths()}
+            />
+          </Block>
+          <Block width={'28%'}>
+            <PickerSelect
+              placeholder="Ngày"
+              heightInput={40}
+              value={day}
+              onValueChange={(value) => setDay(value)}
+              items={getDays(year, month)}
+            />
+          </Block>
+        </Block>
       </Block>
       <Block mt={16} center>
         <Text c1 extraBold>

@@ -89,11 +89,13 @@ export function loadmoreFetchUserApi({ offset, type, keyword }) {
   });
 }
 
-export function updateProfileApi({ name, avatar, description }) {
-  return baseApi.put('/user/profile', {
+export function updateProfileApi({ name, avatar, description, birthday }) {
+
+  return baseApi.postFormData('/user/profile', {
     name,
-    avatar,
+    image: avatar,
     description,
+    birthday
   });
 }
 
