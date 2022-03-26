@@ -62,7 +62,7 @@ const Input = (
     const textInputProps = {
       ref,
       editable: !disabled,
-      placeholderTextColor: colors.textGrayDark,
+      placeholderTextColor: 'white',
       multiline,
       ...rest,
     };
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: 0,
     flex: 1,
-    color: colors.textGrayLight,
+    color: 'white',
     fontFamily: fonts.primaryMedium,
   },
 });

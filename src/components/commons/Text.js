@@ -1,13 +1,13 @@
 /* eslint-disable react/jsx-wrap-multilines */
-import React from "react";
-import { Text } from "react-native";
-import LinearGradient from "react-native-linear-gradient";
-import MaskedView from "@react-native-community/masked-view";
-import { moderateScale } from "@common/scale";
-import PropTypes from "prop-types";
-import colors from "@assets/colors";
-import fontSize from "@assets/fontSize";
-import fonts from "@assets/fontFamily";
+import React, { memo } from 'react';
+import { StyleProp, Text, ViewStyle, TextProps } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import { moderateScale, SpaceInStyleType, LayoutInStyleType } from '@common';
+import { ColorsDefault, FontSizeDefault, FontsFamilyType, FontFamilyDefault } from '@assets';
+import colors from '@assets/colors';
+
+
+
 
 const TextView = ({
   flex,
@@ -25,50 +25,85 @@ const TextView = ({
   pl,
   pv,
   ph,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  c1,
-  c2,
-  center,
-  right,
-  left,
-  size,
-  thin,
-  light,
-  medium,
-  semiBold,
-  bold,
+  type,
+  textCenter,
+  textRight,
+  textLeft,
+  fontSize,
   fontWeight,
-  extraBold,
   italic,
   fontFamily,
   underline,
+  lineThrough,
   uppercase,
+  lineHeight,
   letterSpacing,
   color,
-  children,
   maxWidth,
   maxHeight,
-  textAlignCenter,
   justifyStart,
   justifyEnd,
   alignItemsStart,
   alignItemsEnd,
   gradient,
+  children,
   style,
   ...rest
 }) => {
+  const MAP_FONT_WEIGHT = {
+    thin: '100',
+    light: '300',
+    medium: '500',
+    semiBold: '600',
+    bold: '700',
+    extraBold: '800',
+  };
+
+  const MAP_TYPE_TO_TEXT_STYLE = {
+    h1: {
+      fontSize: FontSizeDefault.FONT_32,
+      lineHeight: lineHeight || 44,
+    },
+    h2: {
+      fontSize: moderateScale(FontSizeDefault.FONT_24),
+      lineHeight: lineHeight || 34,
+    },
+    h3: {
+      fontSize: moderateScale(FontSizeDefault.FONT_20),
+      lineHeight: lineHeight || 28,
+    },
+    h4: {
+      fontSize: moderateScale(FontSizeDefault.FONT_16),
+      lineHeight: lineHeight || 22,
+    },
+    h5: {
+      fontSize: moderateScale(FontSizeDefault.FONT_14),
+      lineHeight: lineHeight || 22,
+    },
+    c1: {
+      fontSize: moderateScale(FontSizeDefault.FONT_12),
+      lineHeight: lineHeight || 18,
+    },
+    c2: {
+      fontSize: moderateScale(FontSizeDefault.FONT_10),
+      lineHeight: lineHeight || 15,
+    },
+    p: {
+      fontSize: moderateScale(FontSizeDefault.FONT_16),
+      lineHeight: lineHeight || 30,
+    },
+
+  };
+
   const styledComponent = [
     {
-      fontSize: 14,
-      lineHeight: 21,
-      fontFamily: fonts.primary,
-      color: colors.textPrimary,
+      fontSize: moderateScale(14),
+      fontWeight: '400',
+      lineHeight: 18,
+      // fontFamily: FontFamilyDefault.primaryRegular,
+      color: colors.white,
     },
-    underline && { textDecorationLine: "underline" },
+
     flex && { flex },
     m && { margin: moderateScale(m) },
     mt && { marginTop: moderateScale(mt) },
@@ -83,99 +118,59 @@ const TextView = ({
     pb && { paddingBottom: moderateScale(pb) },
     pl && { paddingLeft: moderateScale(pl) },
     ph && { paddingHorizontal: moderateScale(ph) },
-    alignItemsStart && { alignItems: "flex-start" },
-    alignItemsEnd && { alignItems: "flex-end" },
-    justifyStart && { justifyContent: "flex-start" },
-    justifyEnd && { justifyContent: "flex-end" },
-    center && { textAlign: "center" },
-    right && { alignSelf: "flex-end", textAlign: "right" },
-    left && { alignSelf: "flex-start", textAlign: "left" },
+    alignItemsStart && { alignItems: 'flex-start' },
+    alignItemsEnd && { alignItems: 'flex-end' },
+    justifyStart && { justifyContent: 'flex-start' },
+    justifyEnd && { justifyContent: 'flex-end' },
+    textCenter && { textAlign: 'center' },
+    textRight && { alignSelf: 'flex-end', textAlign: 'right' },
+    textLeft && { alignSelf: 'flex-start', textAlign: 'left' },
     maxWidth && { maxWidth },
     maxHeight && { maxHeight },
-    textAlignCenter && { textAlign: "center" },
 
-    size && { fontSize: size },
-    h1 && {
-      fontSize: moderateScale(fontSize.FONT_36),
-      lineHeight: moderateScale(34),
-    },
-    h2 && {
-      fontSize: moderateScale(fontSize.FONT_24),
-      lineHeight: moderateScale(28),
-    },
-    h3 && {
-      fontSize: moderateScale(fontSize.FONT_20),
-      lineHeight: moderateScale(23),
-    },
-    h4 && {
-      fontSize: moderateScale(fontSize.FONT_18),
-      lineHeight: moderateScale(20),
-    },
-    h5 && {
-      fontSize: moderateScale(fontSize.FONT_16),
-      lineHeight: moderateScale(19),
-    },
-    c1 && {
-      fontSize: moderateScale(fontSize.FONT_12),
-      lineHeight: moderateScale(18),
-    },
-    c2 && {
-      fontSize: moderateScale(fontSize.FONT_10),
-      lineHeight: moderateScale(15),
+    type && {
+      fontSize: MAP_TYPE_TO_TEXT_STYLE[type].fontSize,
+      lineHeight: MAP_TYPE_TO_TEXT_STYLE[type].lineHeight,
     },
 
-    thin && {
-      fontFamily: fonts.primaryThin,
-    },
-    light && {
-      fontFamily: fonts.primaryLight,
-    },
-    medium && {
-      fontFamily: fonts.primaryMedium,
-    },
-    semiBold && {
-      fontFamily: fonts.primarySemiBold,
-    },
-    bold && {
-      fontFamily: fonts.primaryBold,
-    },
-    extraBold && {
-      fontFamily: fonts.primaryExtraBold,
-    },
-    fontFamily && {
-      fontFamily,
-    },
-    //
     color && {
-      color: colors[color] || color,
+      color,
     },
+
+    fontSize && {
+      fontSize,
+    },
+
     fontWeight && {
-      fontWeight,
+      fontWeight: MAP_FONT_WEIGHT[fontWeight],
     },
+
+    lineHeight && {
+      lineHeight,
+    },
+
     italic && {
-      fontStyle: "italic",
+      fontStyle: 'italic',
     },
     uppercase && {
-      textTransform: "uppercase",
+      textTransform: 'uppercase',
     },
+    underline && { textDecorationLine: 'underline' },
+    lineThrough && { textDecorationLine: 'line-through' },
 
     letterSpacing && {
       letterSpacing,
     },
-
     style && style,
   ];
 
   const GradientText = (props) => (
-    <MaskedView maskElement={<Text {...props} />}>
-      <LinearGradient
-        colors={[`${colors.startColorSong}`, `${colors.endColorSong}`]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 0 }}
-      >
-        <Text {...props} style={[props.style, { opacity: 0 }]} />
-      </LinearGradient>
-    </MaskedView>
+    <LinearGradient
+      colors={[`${colors.startColorSong}`, `${colors.endColorSong}`]}
+      start={{ x: 1, y: 0 }}
+      end={{ x: 1, y: 1 }}>
+      <Text {...props} style={[props.style, { opacity: 0 }]} />
+    </LinearGradient>
   );
 
   if (gradient) {
@@ -189,52 +184,4 @@ const TextView = ({
   );
 };
 
-Text.propTypes = {
-  flex: PropTypes.number,
-  m: PropTypes.number,
-  mt: PropTypes.number,
-  mr: PropTypes.number,
-  mb: PropTypes.number,
-  ml: PropTypes.number,
-  mv: PropTypes.number,
-  mh: PropTypes.number,
-  p: PropTypes.number,
-  pt: PropTypes.number,
-  pr: PropTypes.number,
-  pb: PropTypes.number,
-  pl: PropTypes.number,
-  pv: PropTypes.number,
-  ph: PropTypes.number,
-  h1: PropTypes.bool,
-  h2: PropTypes.bool,
-  h3: PropTypes.bool,
-  h4: PropTypes.bool,
-  h5: PropTypes.bool,
-  c1: PropTypes.bool,
-  c2: PropTypes.bool,
-  center: PropTypes.bool,
-  right: PropTypes.bool,
-  left: PropTypes.bool,
-  size: PropTypes.number,
-  thin: PropTypes.bool,
-  light: PropTypes.bool,
-  medium: PropTypes.bool,
-  semiBold: PropTypes.bool,
-  bold: PropTypes.bool,
-  fontWeight: PropTypes.string,
-  extraBold: PropTypes.bool,
-  italic: PropTypes.bool,
-  fontFamily: PropTypes.string,
-  underline: PropTypes.bool,
-  uppercase: PropTypes.bool,
-  letterSpacing: PropTypes.string,
-  color: PropTypes.string,
-  gradient: PropTypes.bool,
-  children: PropTypes.node,
-  maxWidth: PropTypes.number,
-  maxHeight: PropTypes.number,
-  textAlignCenter: PropTypes.bool,
-  numberOfLines: PropTypes.number,
-};
-
-export default TextView;
+export default memo(TextView);

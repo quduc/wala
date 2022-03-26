@@ -31,6 +31,7 @@ import {
 function* signIpWithEmailSideEffect({ payload }) {
   try {
     const response = yield call(signInWithEmailApi, payload.data);
+    console.log({response});
     yield put(signInWithEmailSucceeded(response));
     if (payload.onSuccess) yield call(payload.onSuccess, response);
   } catch (error) {

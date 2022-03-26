@@ -12,7 +12,7 @@ import fonts from "@assets/fontFamily";
 const HeaderSearch = ({ title, isBack, onChangeText, onClose, value }) => {
   const navigation = useNavigation();
   const { t } = useTranslation();
-  const [isSearch, setIsSearch] = useState(false);
+  const [isSearch, setIsSearch] = useState(true);
   const refInput = useRef();
   const goBackScreen = () => {
     navigation.goBack();

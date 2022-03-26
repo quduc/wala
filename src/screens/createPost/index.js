@@ -22,7 +22,34 @@ import { createPost, fetchPost } from "@modules/home/slice";
 import { loadingCreatePostSelector } from "@modules/home/selectors";
 import Toast from "react-native-toast-message";
 import * as screenTypes from "@navigation/screenTypes";
-
+import PickerSelect from "@components/picker-select";
+const categories = [
+  {
+    "id": 0,
+    "label": "Kinh nghiệm lập trình",
+    "value": 'Kinh nghiệm lập trình'
+  },
+  {
+    "id": 1,
+    "label": "Lập trình web",
+    "value": 'Lập trình web'
+  },
+  {
+    "id": 2,
+    "label": "Lập trình mobile",
+    "value": 'Lập trình mobile'
+  },
+  {
+    "id": 3,
+    "label": "UI/UX",
+    "value": 'UI/UX'
+  },
+  {
+    "id": 4,
+    "label": "UI/UX",
+    "value": 'UI/UX'
+  }
+]
 const validate = (values) => {
   const errors = {};
 
@@ -41,25 +68,27 @@ const CreatePostModal = () => {
   const [uriImage, setUriImage] = useState("");
   const dispatch = useDispatch();
   const loading = useSelector(loadingCreatePostSelector);
-
+  const [category, setCategory] = useState('')
   const formik = useFormik({
     initialValues: { title: "" },
     validate,
   });
 
   const onGoBack = () => {
+    // navigation.goBack()
     dispatch(
       fetchPost({
         onSuccess: () => {
           navigation.navigate(screenTypes.HomeStack);
         },
         onError: (e) => {
-          Toast.show({
-            type: "error",
-            props: {
-              message: e.errorMessage,
-            },
-          });
+          navigation.goBack()
+          // Toast.show({
+          //   type: "error",
+          //   props: {
+          //     message: e.errorMessage,
+          //   },
+          // });
         },
       })
     );
@@ -77,17 +106,20 @@ const CreatePostModal = () => {
         size: uriImage.fileSize,
       };
     }
+    console.log({ image });
     dispatch(
       createPost({
         data: {
           image: image || "",
           title: formik.values?.title,
+          description: formik.values?.description,
+          category
         },
         onError: (e) => {
           Toast.show({
             type: "error",
             props: {
-              message: e.errorMessage,
+              message: 'Vui lòng thử lại sau.',
             },
           });
         },
@@ -105,7 +137,6 @@ const CreatePostModal = () => {
 
   const isDisableButton = () =>
     Object.keys(formik.errors).length !== 0 || !formik.values.title;
-
   return (
     <Body scroll bg="transparent" loading={loading}>
       <Touchable height={120} opacity={0} onPress={onGoBack} />
@@ -117,10 +148,10 @@ const CreatePostModal = () => {
       >
         <Block row mt={32} mb={24}>
           <Text medium c1 color={colors.blackPrimary} left>
-            Cancel
+            Hủy
           </Text>
           <Text bold h5 center flex={1}>
-            Create New Post
+            Viết bài
           </Text>
           <Touchable onPress={onGoBack}>
             <Text medium c1 color={colors.orange} left>
@@ -128,19 +159,20 @@ const CreatePostModal = () => {
             </Text>
           </Touchable>
         </Block>
+
         <TextInput
-          height={140}
-          mt={18}
+          height={40}
+          mt={8}
           multiline
           numberOfLines={10}
-          fontSize={12}
-          placeholder={"Share something about this post"}
-          maxLength={100}
+          fontSize={16}
+          placeholder={"Tiêu đề"}
+          maxLength={50}
           iconRight={
             <Block flex={1} justifyEnd ml={5}>
               <Text mb={15} medium c2 color={colors.textGrayDark}>
                 {formik.values.title?.length}
-                /100
+                /50
               </Text>
             </Block>
           }
@@ -150,11 +182,40 @@ const CreatePostModal = () => {
           error={formik.errors.title && formik.touched.title}
           errorMessage={formik.errors.title}
         />
+        <Block mt={8} />
+        <PickerSelect
+          placeholder="Thể loại"
+          value={category}
+          onValueChange={(value) => setCategory(value)}
+          items={categories}
+        />
+        <TextInput
+          height={240}
+          mt={8}
+          multiline
+          numberOfLines={20}
+          fontSize={16}
+          placeholder={"Nội dung"}
+          maxLength={2000}
+          iconRight={
+            <Block flex={1} justifyEnd ml={5}>
+              <Text mb={15} medium c2 color={colors.textGrayDark}>
+                {formik.values.description?.length}
+                /2000
+              </Text>
+            </Block>
+          }
+          value={formik.values.description}
+          onChangeText={formik.handleChange("description")}
+          onBlur={(e) => handleTrimWhenBlurInput("description", e)}
+          error={formik.errors.description && formik.touched.description}
+          errorMessage={formik.errors.description}
+        />
         <ImagePicker uriImage={uriImage} setUriImage={setUriImage} />
         <Button
           height={40}
           gradient
-          mt={18}
+          mt={8}
           mb={35}
           borderRadius={3}
           bg={colors.orange}

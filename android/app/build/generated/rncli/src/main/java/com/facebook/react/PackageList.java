@@ -23,6 +23,8 @@ import com.reactnativecommunity.slider.ReactSliderPackage;
 import io.invertase.firebase.app.ReactNativeFirebaseAppPackage;
 // @react-native-firebase/messaging
 import io.invertase.firebase.messaging.ReactNativeFirebaseMessagingPackage;
+// @react-native-picker/picker
+import com.reactnativecommunity.picker.RNCPickerPackage;
 // react-native-device-info
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
 // react-native-fast-image
@@ -100,6 +102,7 @@ public class PackageList {
       new ReactSliderPackage(),
       new ReactNativeFirebaseAppPackage(),
       new ReactNativeFirebaseMessagingPackage(),
+      new RNCPickerPackage(),
       new RNDeviceInfo(),
       new FastImageViewPackage(),
       new RNGestureHandlerPackage(),

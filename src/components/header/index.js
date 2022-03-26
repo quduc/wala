@@ -71,7 +71,7 @@ HeaderSearch.defaultProps = {
   title: '',
   isBack: true,
   iconRight: false,
-  onRightPress: () => {},
+  onRightPress: () => { },
   iconLeft: false,
   nodeRight: null,
 };

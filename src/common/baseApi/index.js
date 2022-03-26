@@ -50,9 +50,9 @@ const getBaseURLWithMode = async () => {
     console.log(e);
   }
   if (Platform.OS == "ios") {
-    return "http://192.168.140.68:3000";
+    return "http://192.168.0.101:3000";
   }
-  return "http://192.168.140.68:3000";
+  return "http://192.168.0.101:3000";
 };
 
 export const apiGlobal = APISauce.create({

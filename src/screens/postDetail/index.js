@@ -47,6 +47,7 @@ export default PostDetail = () => {
     };
     try {
       const res = await getPostDetailApi(data);
+      console.log({res});
       setListLike(res.data?.membersLike || []);
       setListComment(res.data?.memberComment || []);
       setIsLiked(res.data?.isLiked);
@@ -136,40 +137,54 @@ export default PostDetail = () => {
 
   const onClose = (id) => {
     modal.normal({
-      title: "Remove Comment",
-      content: "Do you want remove comment?",
+      title: "Xóa bình luận",
+      content: "Bạn chắc chắn muỗn xóa bình luận này?",
       okButton: () => {
         removeComment(id);
       },
     });
   };
-
+  console.log({ item });
+  // TODO: update here
   return (
     <>
       <Block bg={colors.bg}>
         <Header
           isBack={false}
           iconLeft={SvgComponent.back}
+          iconRight={SvgComponent.user}
           onLeftPress={goBack}
-          title={`Post of ${item.name}`}
-          ml={16}
+          onRightPress={goBack}
+          title={`${item.user_name}`}
+          m={16}
         />
       </Block>
-      <Body ph={16} keyboardAvoid loading={loading}>
-        <Text size={16} mt={32} mb={16}>
-          {item.title}
-        </Text>
+      <Body keyboardAvoid loading={loading}>
+
         {item?.image ? (
           <Image
             uri={
               Platform.OS !== "ios"
-                ? "http://192.168.140.68:3000" + item?.image
-                : "http://192.168.140.68:3000" + item?.image
+                ? "http://192.168.0.101:3000" + item?.image
+                : "http://192.168.0.101:3000" + item?.image
             }
-            height={300}
+            height={120}
+            resizeMode='cover'
+
           />
         ) : null}
-        <Block row mt={16} justifyBetween mb={16}>
+        <Block m={10} ph={5} pv={5} bg='#FF8000' borderRadius={8} width={160} >
+          <Text size={10} italic  >
+            #{item.category}
+          </Text>
+        </Block>
+        <Text mh={10} size={18} fontWeight='bold' mb={16}>
+          {item.title}
+        </Text>
+        <Text mh={10} size={14} style={{ textAlign: 'justify' }} mb={16}>
+          {item.description}
+        </Text>
+        <Block mh={10} row mt={16} justifyBetween>
           <Touchable row middle onPress={goListLike}>
             <Icon
               touchable
@@ -183,14 +198,14 @@ export default PostDetail = () => {
             </Text>
           </Touchable>
           <Text size={16} medium>
-            {listComment?.length} comments
+            {listComment?.length} bình luận
           </Text>
         </Block>
         {_.map(listComment, (item, index) => (
           <Block key={index} row mh={16} mt={16} middle justifyBetween>
             <Block row middle>
               <Image
-                uri={item?.avatar}
+                uri={item?.user_avatar}
                 defaultImage={images.default_avatar}
                 circle={30}
               />
@@ -202,7 +217,7 @@ export default PostDetail = () => {
                   profile?.id === item?.userId ? colors.orange : colors.white
                 }
               >
-                {`${item?.name} :`}
+                {`${item?.name ?? ''} :`}
               </Text>
               <Text size={16}>
                 {"  "}
@@ -216,9 +231,12 @@ export default PostDetail = () => {
             />
           </Block>
         ))}
+        <Block height={200} />
+      </Body>
+      <Block absolute bottom={20} ph={10} right={0} width={'100%'} >
         <TextInput
           mt={32}
-          placeholder="Add comment"
+          placeholder="Viết bình luận"
           maxLength={300}
           height={40}
           value={value}
@@ -232,8 +250,7 @@ export default PostDetail = () => {
             />
           }
         />
-        <Block height={60} />
-      </Body>
+      </Block>
       {contextHolder}
     </>
   );

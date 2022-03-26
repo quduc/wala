@@ -45,9 +45,10 @@ export default function Home() {
   const profile = useSelector(profileSelector);
   const loading = useSelector(loadingFetchPostSelector);
   const loadingLoadMore = useSelector(loadingLoadMoreSelector);
-  const refresh = useSelector(refreshSelector);
+  const refresh = useSelector(refreshSelector)
+  const [keyword, setKeyword] = useState('Tìm kiếm ....')
   const { navigate } = useNavigation();
-
+  console.log({ loading });
   useEffect(() => {
     onFetchData();
   }, []);
@@ -57,14 +58,14 @@ export default function Home() {
     dispatch(fetchTotalUnReadNotification());
     dispatch(
       fetchPost({
-        onError: (e) => {
-          Toast.show({
-            type: "error",
-            props: {
-              message: e.errorMessage,
-            },
-          });
-        },
+        // onError: (e) => {
+        //   Toast.show({
+        //     type: "error",
+        //     props: {
+        //       message: e.errorMessage,
+        //     },
+        //   });
+        // },
       })
     );
   };
@@ -105,8 +106,10 @@ export default function Home() {
 
   const renderItem = useCallback(({ item }) => {
     return (
-      <Touchable
-        mt={32}
+      <Touchable mt={10}
+        borderBottom
+        pv={10}
+        borderColor={colors.blackModal}
         onPress={() => {
           navigate(screenTypes.HomeDetailStack, {
             screen: screenTypes.PostDetail,
@@ -114,23 +117,20 @@ export default function Home() {
           });
         }}
       >
-        <Block row justifyBetween middle mr={16}>
+        <Block row justifyBetween middle >
           <Block row>
             <Image
-              uri={item?.avatar}
+              uri={item?.user_avatar}
               defaultImage={images.default_avatar}
               circle={44}
             />
             <Block>
-              <Text size={16} color={colors.white} bold pl={8}>
-                {item?.name}
+              <Text size={16} color={colors.white} bold pl={5}>
+                {item?.user_name}
               </Text>
-              <Text size={12} color={colors.white} pl={8} medium>
-                Created:{" "}
-                <Text size={12} color={colors.white}>
-                  {" "}
-                  {moment(item?.createdAt).format("hh:mm A - DD/MM/YYYY")}{" "}
-                </Text>
+
+              <Text ml={5} type='c2' italic color={colors.white}>
+                {moment(item?.createdAt).format("hh:mm A - DD/MM/YYYY")}{" "}
               </Text>
             </Block>
           </Block>
@@ -144,20 +144,28 @@ export default function Home() {
             }
           />
         </Block>
-        <Text size={14} mv={8}>
-          {item.title}
-        </Text>
-        {item?.image ? (
-          <Image
-            uri={
-              Platform.OS !== "ios"
-                ? "http://192.168.140.68:3000" + item?.image
-                : "http://192.168.140.68:3000" + item?.image
-            }
-            height={300}
-          />
-        ) : null}
-        <Block height={1} bg={"gray"} mt={item?.image ? 32 : 16} />
+        <Block row justifyBetween >
+          <Block width={'65%'}>
+            <Text numberOfLines={3} fontWeight='bold' size={14} mv={3}>
+              {item.title}
+            </Text>
+            <Text numberOfLines={3} color={'#ECECEC'} size={14} mv={3}>
+              {item.description}
+            </Text>
+          </Block>
+          {item?.image ? (
+            <Image
+              uri={
+                Platform.OS !== "ios"
+                  ? "http://192.168.0.101:3000" + item?.image
+                  : "http://192.168.0.101:3000" + item?.image
+              }
+              borderRadius={5}
+              height={80}
+              width={'35%'}
+            />
+          ) : null}
+        </Block>
       </Touchable>
     );
   });
@@ -194,17 +202,23 @@ export default function Home() {
     });
   };
 
+  const onGoSearch = () => {
+    navigate(screenTypes.HomeDetailStack, {
+      screen: screenTypes.ListPosts,
+    });
+  };
+
   return (
     <Body loading={loading} ph={16}>
-      <Text size={24} bold pt={32}>
+      <Text type='h3' fontWeight={'bold'} pt={10}>
         {`Hi ${profile?.name},`}
       </Text>
-      <Block row middle mt={10}>
-        <Block flex={1} mt={16}>
+      <Block row middle mt={8}>
+        <Block flex={1}>
           <Touchable
-            onPress={goListUser}
+            onPress={onGoSearch}
             row
-            height={56}
+            height={30}
             borderRadius={8}
             borderWidth={1}
             middle
@@ -213,7 +227,7 @@ export default function Home() {
           >
             <Icon xml={SvgComponent.searchActive} mh={10} />
             <Text size={16} medium>
-              Search all users...
+              Tìm kiếm ...
             </Text>
           </Touchable>
         </Block>
@@ -221,7 +235,6 @@ export default function Home() {
       <FlatList
         data={post?.items}
         renderItem={renderItem}
-        style={{ marginTop: 32 }}
         keyExtractor={keyExtractor}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={

@@ -14,6 +14,7 @@ MERGED from [:react-native-community_netinfo] /Users/quduc/Documents/ReactNative
 MERGED from [:react-native-community_slider] /Users/quduc/Documents/ReactNative/easy-chat/node_modules/@react-native-community/slider/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-firebase_messaging] /Users/quduc/Documents/ReactNative/easy-chat/node_modules/@react-native-firebase/messaging/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-45:12
 MERGED from [:react-native-firebase_app] /Users/quduc/Documents/ReactNative/easy-chat/node_modules/@react-native-firebase/app/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
+MERGED from [:react-native-picker_picker] /Users/quduc/Documents/ReactNative/easy-chat/node_modules/@react-native-picker/picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-device-info] /Users/quduc/Documents/ReactNative/easy-chat/node_modules/react-native-device-info/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
 MERGED from [:react-native-fast-image] /Users/quduc/Documents/ReactNative/easy-chat/node_modules/react-native-fast-image/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
 MERGED from [:react-native-gesture-handler] /Users/quduc/Documents/ReactNative/easy-chat/node_modules/react-native-gesture-handler/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:2:1-11:12
@@ -381,6 +382,8 @@ MERGED from [:react-native-firebase_messaging] /Users/quduc/Documents/ReactNativ
 MERGED from [:react-native-firebase_messaging] /Users/quduc/Documents/ReactNative/easy-chat/node_modules/@react-native-firebase/messaging/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
 MERGED from [:react-native-firebase_app] /Users/quduc/Documents/ReactNative/easy-chat/node_modules/@react-native-firebase/app/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
 MERGED from [:react-native-firebase_app] /Users/quduc/Documents/ReactNative/easy-chat/node_modules/@react-native-firebase/app/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
+MERGED from [:react-native-picker_picker] /Users/quduc/Documents/ReactNative/easy-chat/node_modules/@react-native-picker/picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-picker_picker] /Users/quduc/Documents/ReactNative/easy-chat/node_modules/@react-native-picker/picker/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-device-info] /Users/quduc/Documents/ReactNative/easy-chat/node_modules/react-native-device-info/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
 MERGED from [:react-native-device-info] /Users/quduc/Documents/ReactNative/easy-chat/node_modules/react-native-device-info/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41
 MERGED from [:react-native-fast-image] /Users/quduc/Documents/ReactNative/easy-chat/node_modules/react-native-fast-image/android/build/intermediates/library_manifest/debug/AndroidManifest.xml:7:5-9:41

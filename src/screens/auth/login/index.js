@@ -16,15 +16,13 @@ import * as screenTypes from "@navigation/screenTypes";
 import colors from "@assets/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { signInWithEmail } from "@modules/auth/slice";
-import { saveEmail, contactUs } from "@modules/user/slice";
-
 import { signInWithEmailLoadingSelector } from "@modules/auth/selectors";
-import { profileSelector } from "@modules/user/selectors";
 import { isEmail, isPassword } from "@utils/index";
 import SvgComponent from "@assets/svg";
 import { useModal } from "@common/customHook/index";
 import { useTranslation } from "react-i18next";
 import i18next from "i18next";
+import Toast from "react-native-toast-message";
 
 const validate = (values) => {
   const errors = {};
@@ -52,19 +50,16 @@ const Login = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [modal, contextHolder] = useModal();
-  const profile = useSelector(profileSelector);
   const signInWithEmailLoading = useSelector(signInWithEmailLoadingSelector);
-
   const passwordRef = useRef(null);
 
   const formik = useFormik({
-    initialValues: { email: profile.email, password: "" },
+    initialValues: {
+      email: "nqduc74@gmail.com",
+      password: "123123a!"
+    },
     validate,
   });
-
-  useEffect(() => {
-    formik.setFieldValue("email", profile.email);
-  }, [profile.email]);
 
   const goToRequestPassword = () => {
     navigation.navigate(screenTypes.RequestOTPScreen);
@@ -82,7 +77,7 @@ const Login = () => {
   };
 
   const onLogin = () => {
-    dispatch(saveEmail({ email: formik.values.email }));
+    // dispatch(saveEmail({ email: formik.values.email }));
 
     dispatch(
       signInWithEmail({
@@ -90,10 +85,13 @@ const Login = () => {
           email: formik.values.email,
           password: formik.values.password,
         },
+        // onSuccess: () => navigation.goBack(),
         onError: (e) => {
-          modal.error({
-            title: t("common:title_error"),
-            content: e.errorMessage,
+          Toast.show({
+            type: "error",
+            props: {
+              message: e.errorMessage,
+            },
           });
         },
       })
@@ -104,7 +102,7 @@ const Login = () => {
     Object.keys(formik.errors).length !== 0 ||
     !formik.values.email ||
     !formik.values.password;
-
+  console.log(isDisableButton());
   return (
     <Body ph={16} keyboardAvoid loading={signInWithEmailLoading}>
       <Block row center mt={70}>
@@ -114,7 +112,6 @@ const Login = () => {
       <Email
         mt={48}
         returnKeyType="next"
-        selectTextOnFocus
         onSubmitEditing={onFocusPassword}
         onBlur={(e) => handleTrimWhenBlurInput("email", e)}
         value={formik.values.email}
@@ -124,8 +121,6 @@ const Login = () => {
       />
       <Password
         mt={18}
-        ref={passwordRef}
-        selectTextOnFocus
         autoFocus={!formik.values.password && !!formik.values.email}
         onBlur={formik.handleBlur("password")}
         value={formik.values.password}

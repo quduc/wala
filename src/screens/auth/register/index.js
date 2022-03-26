@@ -15,8 +15,6 @@ import * as screenTypes from "@navigation/screenTypes";
 import colors from "@assets/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { signUpWithEmail } from "@modules/auth/slice";
-import { saveEmail } from "@modules/user/slice";
-
 import { signUpWithEmailLoadingSelector } from "@modules/auth/selectors";
 import { profileSelector } from "@modules/user/selectors";
 import { useFormik } from "formik";
@@ -90,8 +88,7 @@ const Register = () => {
   };
 
   const onRegister = () => {
-    dispatch(saveEmail({ email: formik.values.email }));
-
+    // dispatch(saveEmail({ email: formik.values.email }));
     dispatch(
       signUpWithEmail({
         data: {
@@ -104,9 +101,9 @@ const Register = () => {
             type: "success",
             props: {
               message: t("txt_register_success"),
-              onClose: () => goToLogin(),
             },
           });
+          goToLogin()
         },
         onError: (e) => {
           Toast.show({

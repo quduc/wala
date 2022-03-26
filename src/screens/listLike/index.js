@@ -45,7 +45,7 @@ export default ListLike = () => {
 
   return (
     <Body loading={loading}>
-      <Header title={"List Liker"} mh={16} />
+      <Header title={"Danh sách yêu thích"} mh={16} />
       <FlatList
         data={data}
         renderItem={renderItem}

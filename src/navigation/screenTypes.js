@@ -15,6 +15,8 @@ export const HomeScreen = "HomeScreen";
 export const HomeDetailStack = "HomeDetailStack";
 export const ListSong = "ListSong";
 export const ListUsers = "ListUsers";
+export const ListPosts = "ListPosts";
+
 export const ListRoom = "ListRoom";
 export const PostDetail = "PostDetail";
 export const ListLike = "ListLike";
