@@ -47,7 +47,6 @@ export default PostDetail = () => {
     };
     try {
       const res = await getPostDetailApi(data);
-      console.log({res});
       setListLike(res.data?.membersLike || []);
       setListComment(res.data?.memberComment || []);
       setIsLiked(res.data?.isLiked);
@@ -144,8 +143,12 @@ export default PostDetail = () => {
       },
     });
   };
-  console.log({ item });
-  // TODO: update here
+  const goProfileOther = () => {
+    navigate(screenTypes.ProfileDetailStack, {
+      screen: screenTypes.ProfileOther,
+      params: { userId: item?.userId },
+    });
+  };
   return (
     <>
       <Block bg={colors.bg}>
@@ -154,7 +157,7 @@ export default PostDetail = () => {
           iconLeft={SvgComponent.back}
           iconRight={SvgComponent.user}
           onLeftPress={goBack}
-          onRightPress={goBack}
+          onRightPress={goProfileOther}
           title={`${item.user_name}`}
           m={16}
         />
@@ -201,11 +204,11 @@ export default PostDetail = () => {
             {listComment?.length} bình luận
           </Text>
         </Block>
-        {_.map(listComment, (item, index) => (
+        {_.map(listComment, (cmt, index) => (
           <Block key={index} row mh={16} mt={16} middle justifyBetween>
             <Block row middle>
               <Image
-                uri={item?.user_avatar}
+                uri={"http://192.168.0.101:3000" + cmt?.avatar}
                 defaultImage={images.default_avatar}
                 circle={30}
               />
@@ -214,14 +217,14 @@ export default PostDetail = () => {
                 size={16}
                 ml={8}
                 color={
-                  profile?.id === item?.userId ? colors.orange : colors.white
+                  profile?.id === cmt?.userId ? colors.orange : colors.white
                 }
               >
-                {`${item?.name ?? ''} :`}
+                {`${cmt?.name ?? ''} :`}
               </Text>
               <Text size={16}>
                 {"  "}
-                {item?.content}
+                {cmt?.content}
               </Text>
             </Block>
             <Icon

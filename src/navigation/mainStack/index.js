@@ -40,6 +40,7 @@ function MainStack() {
         }}
       />
 
+     
       <Stack.Screen
         name={screenTypes.CreatePostScreen}
         component={CreatePostModal}

@@ -42,24 +42,24 @@ const Account = () => {
   };
 
   const goListFriend = () => {
-    navigate(screenTypes.ProfileDetailStack, {
-      screen: screenTypes.ListFriend,
-      params: { dataProfile, statusTab: TabStatus.Friend },
-    });
+    // navigate(screenTypes.ProfileDetailStack, {
+    //   screen: screenTypes.ListFriend,
+    //   params: { dataProfile, statusTab: TabStatus.Friend },
+    // });
   };
 
   const goListFollowers = () => {
-    navigate(screenTypes.ProfileDetailStack, {
-      screen: screenTypes.ListFriend,
-      params: { dataProfile, statusTab: TabStatus.Followers },
-    });
+    // navigate(screenTypes.ProfileDetailStack, {
+    //   screen: screenTypes.ListFriend,
+    //   params: { dataProfile, statusTab: TabStatus.Followers },
+    // });
   };
 
   const goListFollowing = () => {
-    navigate(screenTypes.ProfileDetailStack, {
-      screen: screenTypes.ListFriend,
-      params: { dataProfile, statusTab: TabStatus.Following },
-    });
+    // navigate(screenTypes.ProfileDetailStack, {
+    //   screen: screenTypes.ListFriend,
+    //   params: { dataProfile, statusTab: TabStatus.Following },
+    // });
   };
 
   const goEditProfile = () => {

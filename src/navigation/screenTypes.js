@@ -53,3 +53,4 @@ export const PrivacyPolicy = "PrivacyPolicy";
 export const TermOfUse = "TermOfUse";
 export const ProfileOther = "ProfileOther";
 export const MyPosts = "MyPosts";
+

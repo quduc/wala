@@ -98,7 +98,7 @@ const NotificationItem = ({ item }) => {
         <Block mr={10} circle={8} bg={colors.orange} />
       )}
       <Image
-        uri={normalizerUrlFromW3(item?.sender?.avatar)}
+        uri={"http://192.168.0.101:3000" + item?.sender?.avatar}
         defaultImage={images.default_avatar}
         circle={44}
       />
@@ -106,8 +106,9 @@ const NotificationItem = ({ item }) => {
   );
 
   const _renderContent = () => (
+
     <>
-      {item.type === "LIKE_SONG" && (
+      {/* {item.type === "LIKE_SONG" && (
         <Text flex={1} medium c1>
           <Text extraBold>You</Text>
           <Text> liked {item.data.songName} </Text>
@@ -122,27 +123,27 @@ const NotificationItem = ({ item }) => {
             add {item.data.songName} to {item.data.playlistName}
           </Text>
         </Text>
-      )}
-
+      )} */}
+      {/* 
       {(item.type === "YOU_CREATE_ROMM" ||
         item.type === "FRIEND_CREATE_ROMM") && (
-        <Text flex={1} medium c1>
-          <Text extraBold>
-            {" "}
-            {item.type === "YOU_CREATE_ROMM" ? " You" : item.data.userName}{" "}
+          <Text flex={1} medium c1>
+            <Text extraBold>
+              {" "}
+              {item.type === "YOU_CREATE_ROMM" ? " You" : item.data.userName}{" "}
+            </Text>
+            <Text>
+              created
+              <Text extraBold> {item.data.roomName} Room </Text>
+            </Text>
           </Text>
-          <Text>
-            created
-            <Text extraBold> {item.data.roomName} Room </Text>
-          </Text>
-        </Text>
-      )}
+        )} */}
 
       {item.type === TYPE_NOTIFICATION.FOLLOWING_INFO && (
         <Follwing item={item} />
       )}
 
-      {item.type === TYPE_NOTIFICATION.INVITED && <InvitedToRoom item={item} />}
+      {/* {item.type === TYPE_NOTIFICATION.INVITED && <InvitedToRoom item={item} />} */}
       {item.type === TYPE_NOTIFICATION.FRIEND && (
         <ReceiveRequestFriend item={item} />
       )}

@@ -18,9 +18,10 @@ const ListMessage = ({ roomId }) => {
   const messageList = useSelector(messageListSelector);
   const profile = useSelector(profileSelector);
   const dispatch = useDispatch();
-
+  console.log({ profile });
   const _renderListMessageItem = ({ item }) => {
-    if (item?.sender?.name === profile.name) {
+    console.log({ item });
+    if (item?.sender?.id === profile.id) {
       return (
         <Block row mv={8} justifyEnd>
           <Block mr={12}>
@@ -41,7 +42,7 @@ const ListMessage = ({ roomId }) => {
             </Text>
           </Block>
           <Image
-            source={item?.sender?.avatar}
+            uri={"http://192.168.0.101:3000" + item?.sender?.avatar}
             defaultImage={images.default_avatar}
             circle={22}
             mt={2}
@@ -49,10 +50,11 @@ const ListMessage = ({ roomId }) => {
         </Block>
       );
     }
+
     return (
       <Block row mv={8}>
         <Image
-          source={item?.sender?.avatar}
+          uri={"http://192.168.0.101:3000" + item?.sender?.avatar}
           defaultImage={images.default_avatar}
           circle={22}
           mt={2}
@@ -62,7 +64,7 @@ const ListMessage = ({ roomId }) => {
             extraBold
             c1
             color={
-              item?.sender?.name === profile.name
+              item?.sender?.id === profile.id
                 ? colors.orange
                 : colors.textPrimary
             }
@@ -86,22 +88,6 @@ const ListMessage = ({ roomId }) => {
           data={messageList}
           keyExtractor={keyExtractor}
           inverted
-          // onEndReached={() => {
-          //   if (
-          //     !loadMoreMessageListNoMore &&
-          //     !loadmoreMessageListLoading &&
-          //     messageList.length >= 100
-          //   ) {
-          //     onLoadMoreMessage();
-          //   }
-          // }}
-          // ListFooterComponent={() =>
-          //   loadmoreMessageListLoading && (
-          //     <Block center mv={5}>
-          //       <Loading />
-          //     </Block>
-          //   )
-          // }
           renderItem={_renderListMessageItem}
         />
       )}

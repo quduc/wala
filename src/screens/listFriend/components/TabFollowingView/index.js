@@ -34,7 +34,7 @@ export default TabFollowingView = ({
     if (currentId === item.friend?.id) {
       return (
         <Block row mt={16} middle>
-          <Image circle={44} source={{ uri: item?.friend?.avatar }} />
+          <Image circle={44} source={{ uri: "http://192.168.0.101:3000" + item?.friend?.avatar }} />
           <Text flex={1} ml={16} c1 extraBold>
             {item.friend?.name}
           </Text>
@@ -86,7 +86,7 @@ export default TabFollowingView = ({
   const renderNoData = () => (
     <Block center middle mt={64}>
       <Text color={colors.white} size={16}>
-        {t('noData')}
+        Không có dữ liệu
       </Text>
     </Block>
   );

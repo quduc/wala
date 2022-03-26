@@ -76,7 +76,7 @@ const ChatScreen = () => {
       >
         <Block mr={16}>
           <Image
-            uri={item?.avatar}
+            uri={"http://192.168.0.101:3000" + item?.avatar}
             defaultImage={images.default_avatar}
             circle={44}
           />

@@ -99,7 +99,7 @@ const UserItem = ({ item, index, iconType, onSuccess }) => {
       onPress={goProfile}
     >
       <Image
-        uri={item?.avatar}
+        uri={"http://192.168.0.101:3000" + item?.avatar}
         defaultImage={images.default_avatar}
         circle={60}
         mh={16}

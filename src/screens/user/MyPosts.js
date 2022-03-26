@@ -26,6 +26,7 @@ export default function MyPosts() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const userProfile = useSelector(profileSelector)
+    console.log({ userProfile });
     useEffect(() => {
         fetchPostList();
     }, [debouncedSearchTerm]);
